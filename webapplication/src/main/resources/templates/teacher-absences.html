@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Absences - Tutoring Management System</title>
+
+    <link th:href="@{/css/themes.css}" rel="stylesheet">
+
+    <link th:href="@{/css/navbar.css}" rel="stylesheet">
+    <link th:href="@{/css/footer.css}" rel="stylesheet">
+    <link th:href="@{/css/toast.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link th:href="@{/css/teacher-layout.css}" rel="stylesheet">
+    <link th:href="@{/css/teacher-absences.css}" rel="stylesheet">
+</head>
+<body>
+
+<!-- Flash of Unstyled Content -->
+<script>
+    const savedTheme = localStorage.getItem('tms_theme') || 'theme-default';
+    const currentUser = localStorage.getItem('tms_current_user') || '';
+
+    // read the sidebar state specifically for this user
+    const isSidebarCollapsed = localStorage.getItem('tms_sidebar_collapsed_' + currentUser) === 'true';
+
+    document.body.className = savedTheme + (isSidebarCollapsed ? ' sidebar-collapsed' : '');
+</script>
+
+<nav th:replace="~{layout/navbar :: navbar}"></nav>
+
+<div class="teacher-wrapper">
+    <aside th:replace="~{layout/teacher-sidebar :: sidebar}"></aside>
+
+    <main class="teacher-main-content">
+        <div class="page-header">
+            <div>
+                <h2>Absences Management</h2>
+                <p class="subtitle">Declare and manage your upcoming absences.</p>
+            </div>
+            <button id="openAbsenceModalBtn" class="btn-primary">
+                <i class="fas fa-calendar-plus"></i> Declare Absence
+            </button>
+        </div>
+
+        <div id="absencesGrid" class="absences-grid">
+            <div class="loading-spinner">Loading your absences...</div>
+        </div>
+    </main>
+
+    <div id="absenceModal" class="modal-overlay d-none">
+        <div class="modal-content">
+            <span id="closeAbsenceModalBtn" class="close-btn">&times;</span>
+
+            <div class="modal-header">
+                <h3 id="absenceModalTitle">Declare Absence</h3>
+            </div>
+
+            <div id="absenceAlert" class="alert d-none"></div>
+
+            <form id="absenceForm">
+                <div class="form-group">
+                    <label for="absenceDate">Absence Date *</label>
+                    <input type="date" id="absenceDate" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Absence Type *</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="absenceType" value="FULL_DAY" checked>
+                            Full-Day Absence
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="absenceType" value="SPECIFIC_CLASS">
+                            Specific Class Only
+                        </label>
+                    </div>
+                </div>
+
+                <div id="specificClassContainer" class="form-group d-none">
+                    <label for="absenceSlotSelect">Select Class *</label>
+                    <select id="absenceSlotSelect" class="form-control">
+                        <option value="" disabled selected>Please select a date first...</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="absenceReason">Reason *</label>
+                    <textarea id="absenceReason" rows="3" placeholder="e.g., Medical appointment, Personal reasons..." required></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" id="saveAbsenceBtn" class="btn-submit">Save Absence</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{layout/footer :: footer}"></footer>
+
+<script th:src="@{/js/toast.js}"></script>
+<script th:src="@{/js/api.js}"></script>
+<script th:src="@{/js/teacher-absences.js}"></script>
+</body>
+</html>

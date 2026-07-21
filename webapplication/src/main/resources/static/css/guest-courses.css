@@ -1,0 +1,329 @@
+.page-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #f8f9fa; /* Light grey background to make white cards pop */
+}
+
+.courses-container {
+    flex: 1;
+    padding: 60px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Centered Header */
+.courses-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.courses-header h2 {
+    color: #2c3e50;
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+.courses-header p {
+    color: #7f8c8d;
+    font-size: 1.1rem;
+}
+
+.empty-state {
+    text-align: center;
+}
+
+/* Grid System */
+.courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 30px;
+    justify-items: center; /* Centers cards if there are few */
+}
+
+/* Card Design */
+.course-card {
+    background-color: #ffffff;
+    border: 1px solid #e0e4e8;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    padding: 30px;
+    width: 100%;
+    box-sizing: border-box;
+    cursor: pointer; /* Tells the user it is clickable */
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Color accent at the top of the card */
+.course-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background-color: #4f85d4;
+}
+
+.course-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
+    border-color: #4f85d4;
+}
+
+.course-title {
+    font-size: 1.4rem;
+    color: #2c3e50;
+    margin: 0 0 20px 0;
+    font-weight: 700;
+    text-align: center;
+}
+
+/* Clear Information Labels */
+.info-row {
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.info-label {
+    font-weight: 700;
+    color: #34495e;
+    display: block; /* Puts the label on its own line */
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+}
+
+.info-value {
+    color: #555;
+}
+
+/* Styling for the list of teachers on the card */
+.teachers-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 6px;
+}
+
+.teacher-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    color: #555;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+.teacher-item i {
+    color: #4f85d4;
+    margin-top: 3px;
+}
+
+/* Interactive Hint */
+.click-hint {
+    margin-top: auto;
+    padding-top: 20px;
+    text-align: center;
+    color: #4f85d4;
+    font-weight: 600;
+    font-size: 0.9rem;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.course-card:hover .click-hint {
+    opacity: 1;
+}
+
+/* --- MODAL (Pop-up) STYLING --- */
+.modal-overlay {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 9990;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    /* Flexbox used here to perfectly center the modal card in the screen */
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-card {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 1050px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+    position: relative;
+    animation: zoomIn 0.3s ease-out;
+    max-height: 90vh; /* Prevents it from going off-screen */
+    overflow-y: auto; /* Adds scroll inside the modal if table is huge */
+}
+
+@keyframes zoomIn {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.close-btn {
+    position: absolute;
+    right: 25px;
+    top: 20px;
+    color: #95a5a6;
+    font-size: 32px;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.close-btn:hover {
+    color: #e74c3c;
+}
+
+.modal-card h3 {
+    margin-top: 0;
+    color: #2c3e50;
+    font-size: 1.8rem;
+    border-bottom: 2px solid #ecf0f1;
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+}
+
+/* Table Styling inside Modal */
+.schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.schedule-table th, .schedule-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+.schedule-table th {
+    background-color: #f8f9fa;
+    color: #34495e;
+    font-weight: 700;
+}
+
+/* Status colors */
+.seats-available { color: #27ae60; font-weight: bold; }
+.seats-full { color: #e74c3c; font-weight: bold; }
+
+/* Status Badges */
+.badge-available {
+    background-color: #e8f8f5;
+    color: #27ae60;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    border: 1px solid #d1f2eb;
+}
+
+.badge-full {
+    background-color: #fdeaea;
+    color: #e74c3c;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    border: 1px solid #fad4d4;
+}
+
+/* Action Column & Buttons */
+.action-cell {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.btn-enroll {
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s;
+    font-size: 0.85rem;
+}
+
+.btn-enroll:hover {
+    background-color: #219653;
+}
+
+.btn-enroll:active {
+    transform: scale(0.96);
+}
+
+.btn-enroll:disabled {
+    background-color: #bdc3c7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.lock-icon {
+    color: #95a5a6;
+    font-size: 1.1rem;
+    cursor: help;
+}
+
+/* Modal Alert box styles */
+#modalAlertBox {
+    padding: 15px 20px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    line-height: 1.5;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+#modalAlertBox.alert-danger {
+    background-color: #fdeaea;
+    color: #e74c3c;
+    border: 1px solid #fad4d4;
+    border-left: 5px solid #e74c3c;
+}
+
+#modalAlertBox.alert-success {
+    background-color: #e8f8f5;
+    color: #27ae60;
+    border: 1px solid #d1f2eb;
+    border-left: 5px solid #27ae60;
+}
+
+#modalAlertBox i {
+    font-size: 1.2rem;
+}
+
+@keyframes fadeIn {
+
+    from { opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

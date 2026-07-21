@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Tutoring Management System</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/themes.css}">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+
+    <link rel="stylesheet" th:if="${userRole == 'TEACHER'}" th:href="@{/css/teacher-layout.css}">
+    <link rel="stylesheet" th:if="${userRole == 'STUDENT'}" th:href="@{/css/student-layout.css}">
+
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/toast.css}">
+    <link rel="stylesheet" th:href="@{/css/user-profile.css}">
+</head>
+<body>
+
+<script>
+    const savedTheme = localStorage.getItem('tms_theme') || 'theme-default';
+    const currentUser = localStorage.getItem('tms_current_user') || '';
+    const isSidebarCollapsed = localStorage.getItem('tms_sidebar_collapsed_' + currentUser) === 'true';
+    document.body.className = savedTheme + (isSidebarCollapsed ? ' sidebar-collapsed' : '');
+</script>
+
+<div th:replace="~{layout/navbar :: navbar}"></div>
+
+<div th:class="${userRole == 'TEACHER'} ? 'teacher-wrapper' : 'student-wrapper'">
+
+    <th:block th:if="${userRole == 'TEACHER'}">
+        <div th:replace="~{layout/teacher-sidebar :: sidebar}"></div>
+    </th:block>
+
+    <th:block th:if="${userRole == 'STUDENT'}">
+        <div th:replace="~{layout/student-sidebar :: sidebar}"></div>
+    </th:block>
+
+    <main th:class="${userRole == 'TEACHER'} ? 'teacher-main-content' : 'student-main-content'">
+
+        <div class="profile-header">
+            <h2><i class="fas fa-user-cog"></i> My Profile</h2>
+            <p>Manage your personal information, preferences, and account security.</p>
+        </div>
+
+        <div class="profile-container">
+            <div class="tab-menu">
+                <button class="tab-btn active" data-target="tab-1"><i class="fas fa-id-card"></i> Personal Info</button>
+                <button class="tab-btn" data-target="tab-2"><i class="fas fa-paint-brush"></i> Preferences</button>
+                <button class="tab-btn" data-target="tab-3"><i class="fas fa-lock"></i> Password</button>
+                <button class="tab-btn" data-target="tab-4"><i class="fas fa-user-circle"></i> Avatar</button>
+            </div>
+
+            <div class="tab-content-container">
+
+                <div id="tab-1" class="tab-panel active">
+                    <form id="personalInfoForm" class="profile-form">
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="username">Username (Read-only)</label>
+                                <input type="text" id="username" name="username" readonly class="input-readonly">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="fullName">Full Name</label>
+                                <input type="text" id="fullName" name="fullName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="address">Address</label>
+                                <input type="text" id="address" name="address">
+                            </div>
+                        </div>
+
+                        <div id="teacherFields" style="display: none;">
+                            <div class="form-row">
+                                <div class="form-group full-width">
+                                    <label for="specialty">Specialty</label>
+                                    <input type="text" id="specialty" name="specialty">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group full-width">
+                                    <label for="bio">Short Bio</label>
+                                    <textarea id="bio" name="bio" rows="4"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="studentFields" style="display: none;">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="age">Age</label>
+                                    <input type="number" id="age" name="age" min="5" max="99">
+                                </div>
+                                <div class="form-group">
+                                    <label for="schoolClass">School Class</label>
+                                    <input type="text" id="schoolClass" name="schoolClass">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="parentFullName">Parent Full Name</label>
+                                    <input type="text" id="parentFullName" name="parentFullName">
+                                </div>
+                                <div class="form-group">
+                                    <label for="parentTaxId">Parent Tax ID</label>
+                                    <input type="text" id="parentTaxId" name="parentTaxId">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn-save"><i class="fas fa-save"></i> Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="tab-2" class="tab-panel">
+                    <div class="profile-section-header">
+                        <h3><i class="fas fa-palette"></i> Navigation Theme</h3>
+                        <p>Customize the appearance of the application header and navigation sidebar.</p>
+                    </div>
+
+                    <form id="preferencesForm" class="profile-form">
+                        <div class="theme-grid">
+                            <label class="theme-card" for="themeDefault">
+                                <div class="theme-preview preview-default"></div>
+                                <div class="theme-info">
+                                    <input type="radio" name="themeColor" id="themeDefault" value="theme-default">
+                                    <span>Default Blue</span>
+                                </div>
+                            </label>
+                            <label class="theme-card" for="themePurple">
+                                <div class="theme-preview preview-purple"></div>
+                                <div class="theme-info">
+                                    <input type="radio" name="themeColor" id="themePurple" value="theme-purple">
+                                    <span>Royal Purple</span>
+                                </div>
+                            </label>
+                            <label class="theme-card" for="themeTeal">
+                                <div class="theme-preview preview-teal"></div>
+                                <div class="theme-info">
+                                    <input type="radio" name="themeColor" id="themeTeal" value="theme-teal">
+                                    <span>Midnight Teal</span>
+                                </div>
+                            </label>
+                            <label class="theme-card" for="themeRed">
+                                <div class="theme-preview preview-red"></div>
+                                <div class="theme-info">
+                                    <input type="radio" name="themeColor" id="themeRed" value="theme-red">
+                                    <span>Crimson Red</span>
+                                </div>
+                            </label>
+                            <label class="theme-card" for="themeGreen">
+                                <div class="theme-preview preview-green"></div>
+                                <div class="theme-info">
+                                    <input type="radio" name="themeColor" id="themeGreen" value="theme-green">
+                                    <span>Forest Green</span>
+                                </div>
+                            </label>
+                            <label class="theme-card" for="themeDark">
+                                <div class="theme-preview preview-dark"></div>
+                                <div class="theme-info">
+                                    <input type="radio" name="themeColor" id="themeDark" value="theme-dark">
+                                    <span>High Contrast</span>
+                                </div>
+                            </label>
+                            <label class="theme-card" for="themeOrange">
+                                <div class="theme-preview preview-orange"></div>
+                                <div class="theme-info">
+                                    <input type="radio" name="themeColor" id="themeOrange" value="theme-orange">
+                                    <span>Sunset Orange</span>
+                                </div>
+                            </label>
+                            <label class="theme-card" for="themeSlate">
+                                <div class="theme-preview preview-slate"></div>
+                                <div class="theme-info">
+                                    <input type="radio" name="themeColor" id="themeSlate" value="theme-slate">
+                                    <span>Slate Gray</span>
+                                </div>
+                            </label>
+                            <label class="theme-card" for="themeMustard">
+                                <div class="theme-preview preview-mustard"></div>
+                                <div class="theme-info">
+                                    <input type="radio" name="themeColor" id="themeMustard" value="theme-mustard">
+                                    <span>Onyx & Mustard</span>
+                                </div>
+                            </label>
+                            <label class="theme-card" for="themePink">
+                                <div class="theme-preview preview-pink"></div>
+                                <div class="theme-info">
+                                    <input type="radio" name="themeColor" id="themePink" value="theme-pink">
+                                    <span>Plum & Ruby</span>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn-save"><i class="fas fa-save"></i> Save Preferences</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="tab-3" class="tab-panel">
+                    <div class="profile-section-header">
+                        <h3><i class="fas fa-lock"></i> Password Settings</h3>
+                        <p>Update your password to keep your account secure.</p>
+                    </div>
+                    <form id="securityForm" class="profile-form">
+                        <div class="form-row">
+                            <div class="form-group full-width">
+                                <label for="oldPassword">Current Password</label>
+                                <div class="password-input-wrapper">
+                                    <input type="password" id="oldPassword" name="oldPassword" required minlength="8" maxlength="50">
+                                    <button type="button" class="toggle-password" title="Toggle visibility"><i class="fas fa-eye"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="newPassword">New Password</label>
+                                <div class="password-input-wrapper">
+                                    <input type="password" id="newPassword" name="newPassword" required minlength="8" maxlength="50">
+                                    <button type="button" class="toggle-password" title="Toggle visibility"><i class="fas fa-eye"></i></button>
+                                </div>
+                                <div id="passwordStrengthContainer" class="password-strength-wrapper" style="display: none;">
+                                    <span class="strength-label">Your password strength</span>
+                                    <span id="passwordStrengthBadge" class="strength-badge"></span>
+                                </div>
+                                <small class="form-hint">Must be 8-50 characters.</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="confirmNewPassword">Confirm New Password</label>
+                                <div class="password-input-wrapper">
+                                    <input type="password" id="confirmNewPassword" name="confirmNewPassword" required minlength="8" maxlength="50">
+                                    <button type="button" class="toggle-password" title="Toggle visibility"><i class="fas fa-eye"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn-save"><i class="fas fa-key"></i> Update Password</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="tab-4" class="tab-panel">
+                    <div class="profile-section-header">
+                        <h3><i class="fas fa-user-circle"></i> Public Avatar</h3>
+                        <p>You can change your Avatar here. This image will represent you across the platform.</p>
+                    </div>
+                    <form id="avatarForm" class="profile-form">
+                        <details class="premium-accordion">
+                            <summary><i class="fas fa-images"></i> Choose from Gallery</summary>
+                            <div class="accordion-content">
+                                <div class="avatar-grid">
+                                    <label class="avatar-card" th:each="i : ${#numbers.sequence(1, 24)}">
+                                        <input type="radio" name="avatarName" th:value="|avatar-${i}.svg|">
+                                        <img th:src="@{|/images/avatars/avatar-${i}.svg|}" th:alt="|Avatar ${i}|">
+                                    </label>
+                                </div>
+                            </div>
+                        </details>
+                        <div class="form-actions" style="margin-top: 30px;">
+                            <button type="submit" class="btn-save"><i class="fas fa-portrait"></i> Save Avatar</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </main>
+</div>
+
+<div th:replace="~{layout/footer :: footer}"></div>
+
+<script th:src="@{/js/toast.js}"></script>
+<script th:src="@{/js/user-profile.js}"></script>
+</body>
+</html>

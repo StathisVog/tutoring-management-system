@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Grades & Tests - Tutoring Management System</title>
+
+    <link th:href="@{/css/themes.css}" rel="stylesheet">
+    <link th:href="@{/css/navbar.css}" rel="stylesheet">
+    <link th:href="@{/css/footer.css}" rel="stylesheet">
+    <link th:href="@{/css/toast.css}" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link th:href="@{/css/student-layout.css}" rel="stylesheet">
+    <link th:href="@{/css/student-tests.css}" rel="stylesheet">
+</head>
+<body>
+
+<script>
+    const savedTheme = localStorage.getItem('tms_theme') || 'theme-default';
+    const currentUser = localStorage.getItem('tms_current_user') || 'guest';
+    const isSidebarCollapsed = localStorage.getItem('tms_sidebar_collapsed_' + currentUser) === 'true';
+    document.body.className = savedTheme + (isSidebarCollapsed ? ' sidebar-collapsed' : '');
+</script>
+
+<nav th:replace="~{layout/navbar :: navbar}"></nav>
+
+<div class="student-wrapper">
+    <aside th:replace="~{layout/student-sidebar :: sidebar}"></aside>
+
+    <main class="student-main-content">
+
+        <div class="tests-header">
+            <div class="header-titles">
+                <h2>My Grades & Tests</h2>
+                <p>Track your academic performance and view feedback from your teachers.</p>
+            </div>
+
+            <div class="test-filters">
+                <button class="filter-btn active" data-filter="GRADED">Graded</button>
+                <button class="filter-btn" data-filter="PENDING">Pending / Upcoming</button>
+                <button class="filter-btn" data-filter="ALL">All Tests</button>
+            </div>
+        </div>
+
+        <div id="testsGrid" class="tests-grid">
+            <div class="loading-spinner"><i class="fas fa-circle-notch fa-spin fa-2x"></i><p>Loading your results...</p></div>
+        </div>
+
+    </main>
+</div>
+
+<footer th:replace="~{layout/footer :: footer}"></footer>
+
+<script th:src="@{/js/toast.js}"></script>
+<script th:src="@{/js/api.js}"></script>
+<script th:src="@{/js/student-tests.js}"></script>
+</body>
+</html>

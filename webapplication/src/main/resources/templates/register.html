@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Tutoring Management System</title>
+
+    <link th:href="@{/css/themes.css}" rel="stylesheet">
+
+    <link th:href="@{/css/navbar.css}" rel="stylesheet">
+    <link th:href="@{/css/footer.css}" rel="stylesheet">
+    <link th:href="@{/css/register.css}" rel="stylesheet">
+</head>
+<body>
+
+<nav th:replace="~{layout/navbar :: navbar}"></nav>
+
+<div class="register-container">
+    <div class="register-card">
+        <h2>Create an Account</h2>
+        <p class="subtitle">Join the Tutoring Management System</p>
+
+        <div id="successMessage" class="alert alert-success"></div>
+        <div id="errorMessage" class="alert alert-error"></div>
+
+        <form id="registerForm">
+
+            <div class="form-group">
+                <label for="roleSelection">I am registering as a: <span class="required-asterisk">*</span></label>
+                <select id="roleSelection" name="roleSelection" required>
+                    <option value="" disabled selected>-- Select Role --</option>
+                    <option value="STUDENT">Student</option>
+                    <option value="TEACHER">Teacher</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="username">Username <span class="required-asterisk">*</span></label>
+                <input type="text" id="username" name="username" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address <span class="required-asterisk">*</span></label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password <span class="required-asterisk">*</span></label>
+                <input type="password" id="password" name="password" required minlength="6">
+                <div id="passwordStrengthContainer" class="password-strength-wrapper" style="display: none;">
+                    <span class="strength-label">Your password strength</span>
+                    <span id="passwordStrengthBadge" class="strength-badge"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="fullName">Full Name <span class="required-asterisk">*</span></label>
+                <input type="text" id="fullName" name="fullName" required>
+            </div>
+
+            <div class="form-group">
+                <label for="address">Home Address <span class="required-asterisk">*</span></label>
+                <input type="text" id="address" name="address">
+            </div>
+
+            <div id="studentSection" class="dynamic-section">
+                <div class="form-group">
+                    <label for="age">Age <span class="required-asterisk">*</span></label>
+                    <input type="number" id="age" name="age" min="5" max="100" required>
+                </div>
+                <div class="form-group">
+                    <label for="schoolClass">School Class <span class="required-asterisk">*</span></label>
+                    <select id="schoolClass" name="schoolClass" required>
+                        <option value="" disabled selected>-- Select Class --</option>
+                        <option value="A_GUMNASIOU">Junior High School - 1st Year</option>
+                        <option value="B_GUMNASIOU">Junior High School - 2nd Year</option>
+                        <option value="C_GUMNASIOU">Junior High School - 3rd Year</option>
+                        <option value="A_LUKEIOU">High School - 1st Year</option>
+                        <option value="B_LUKEIOU">High School - 2nd Year</option>
+                        <option value="C_LUKEIOU">High School - 3rd Year</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="parentFullName">Parent's Full Name <span class="required-asterisk">*</span></label>
+                    <input type="text" id="parentFullName" name="parentFullName" required>
+                </div>
+                <div class="form-group">
+                    <label for="parentTaxId">Parent's Tax ID (AFM) <span class="required-asterisk">*</span></label>
+                    <input type="text" id="parentTaxId" name="parentTaxId" required>
+                </div>
+            </div>
+
+            <div id="teacherSection" class="dynamic-section">
+                <div class="form-group">
+                    <label for="specialty">Specialty (e.g., Mathematician, Physicist) <span class="required-asterisk">*</span></label>
+                    <input type="text" id="specialty" name="specialty" required>
+                </div>
+                <div class="form-group">
+                    <label>Courses you can teach <span class="required-asterisk">*</span></label>
+                    <div id="coursesCheckboxContainer" class="checkbox-scroll-container">
+                        <span class="status-text-sm">Loading available courses...</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="bio">Short Biography</label>
+                    <textarea id="bio" name="bio" rows="4" maxlength="500" placeholder="Write a few words about your background and experience..."></textarea>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit" id="submitBtn" disabled>Register</button>
+        </form>
+    </div>
+</div>
+
+<footer th:replace="~{layout/footer :: footer}"></footer>
+
+<script th:src="@{/js/api.js}"></script>
+<script th:src="@{/js/register.js}"></script>
+</body>
+</html>

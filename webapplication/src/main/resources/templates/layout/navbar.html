@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title></title>
+</head>
+<body>
+
+<nav th:fragment="navbar" class="main-navbar">
+    <div class="nav-brand">
+        <a th:href="@{/}">Tutoring Management System</a>
+    </div>
+
+    <ul class="nav-links">
+        <li><a th:href="@{/courses}">Courses</a></li>
+
+        <li class="guest-only"><a th:href="@{/login}">Login</a></li>
+        <li class="guest-only"><a th:href="@{/register}" class="btn-register">Register</a></li>
+
+        <li class="user-only" style="display: none;"><a id="navDashboardLink" href="#">Dashboard</a></li>
+
+        <li class="user-only nav-avatar-item" style="display: none;">
+            <a href="/teacher/profile" id="navProfileLink"> <img id="navAvatarImage" src="/images/avatars/avatar-default.svg" alt="Profile Avatar" class="nav-avatar">
+            </a>
+        </li>
+
+        <li class="user-only" style="display: none;"><a id="logoutBtn" href="#" class="btn-logout">Logout</a></li>
+    </ul>
+
+    <script th:src="@{/js/navbar.js}"></script>
+</nav>
+
+</body>
+</html>

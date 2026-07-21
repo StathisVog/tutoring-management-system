@@ -1,0 +1,191 @@
+/* --- Main Layout Wrapper --- */
+.admin-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* --- Tabs Navigation --- */
+.tabs-container {
+    display: flex;
+    border-bottom: 2px solid #ecf0f1;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+
+.tab-btn {
+    background: none;
+    border: none;
+    padding: 12px 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #7f8c8d;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tab-btn:hover {
+    color: #34495e;
+    background-color: #f8f9fa;
+}
+
+.tab-btn.active {
+    color: #2c3e50;
+    border-bottom-color: #3498db;
+}
+
+.badge-count {
+    background-color: #e74c3c;
+    color: white;
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    border-radius: 12px;
+    margin-left: 5px;
+}
+
+/* --- Tab Panes --- */
+.tab-pane {
+    display: none;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+/* --- Action Cards Foundation --- */
+.action-cards-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.action-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    border-left: 4px solid #3498db; /* Μπλε για τα Enrolls (θα το κάνουμε δυναμικό μετά) */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: box-shadow 0.2s ease;
+}
+
+.action-card:hover {
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* Helpers */
+.init-hidden { display: none; }
+.text-muted { color: #7f8c8d; }
+.empty-state { text-align: center; padding: 40px; color: #7f8c8d; }
+.empty-state-icon { margin-bottom: 15px; color: #bdc3c7; }
+
+/* --- Action Card Internal Layout --- */
+.action-card-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 20px;
+}
+
+.card-section {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* Columns (Aspect Ratios) */
+.card-student { flex: 1.2; }
+.card-course { flex: 2; border-left: 1px solid #ecf0f1; padding-left: 20px; }
+.card-actions { flex: 0.8; display: flex; gap: 10px; justify-content: flex-end; }
+
+/* Card Typography */
+.student-name { font-weight: bold; font-size: 1.1rem; color: #2c3e50; }
+.student-email { font-size: 0.85rem; color: #7f8c8d; }
+.request-date { font-size: 0.8rem; color: #bdc3c7; margin-top: 5px; }
+
+.course-title { font-weight: bold; color: #3498db; font-size: 1.05rem; }
+.course-details { font-size: 0.85rem; color: #7f8c8d; margin-top: 3px; }
+
+/* --- Action Buttons --- */
+.btn-action-sm {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-approve {
+    background-color: #2ecc71;
+    color: white;
+}
+
+.btn-approve:hover {
+    background-color: #27ae60;
+}
+
+.btn-reject {
+    background-color: transparent;
+    border: 1px solid #e74c3c;
+    color: #e74c3c;
+}
+
+.btn-reject:hover {
+    background-color: #e74c3c;
+    color: white;
+}
+
+/* Confirmation status (Sure?) */
+.btn-reject.btn-sure-state {
+    background-color: #e67e22;
+    border-color: #e67e22;
+    color: white;
+}
+
+.btn-reject.btn-sure-state:hover {
+    background-color: #d35400;
+}
+
+/* Standby mode (Disabled) to avoid double-clicking */
+.btn-action-sm:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* --- Drop Request Specifics --- */
+.action-card.card-drop {
+    border-left-color: #e67e22;
+}
+
+.btn-approve-drop {
+    background-color: transparent;
+    border: 1px solid #e67e22;
+    color: #e67e22;
+}
+
+.btn-approve-drop:hover {
+    background-color: #e67e22;
+    color: white;
+}
+
+.btn-approve-drop.btn-sure-state {
+    background-color: #d35400;
+    border-color: #d35400;
+    color: white;
+}
+
+.btn-approve-drop.btn-sure-state:hover {
+    background-color: #c0392b;
+    border-color: #c0392b;
+}

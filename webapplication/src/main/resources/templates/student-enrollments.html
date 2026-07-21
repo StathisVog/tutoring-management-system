@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Enrollments - Tutoring Management System</title>
+
+    <link th:href="@{/css/themes.css}" rel="stylesheet">
+    <link th:href="@{/css/navbar.css}" rel="stylesheet">
+    <link th:href="@{/css/footer.css}" rel="stylesheet">
+    <link th:href="@{/css/toast.css}" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link th:href="@{/css/student-layout.css}" rel="stylesheet">
+    <link th:href="@{/css/student-enrollments.css}" rel="stylesheet">
+</head>
+<body>
+
+<script>
+    const savedTheme = localStorage.getItem('tms_theme') || 'theme-default';
+    const currentUser = localStorage.getItem('tms_current_user') || 'guest';
+    const isSidebarCollapsed = localStorage.getItem('tms_sidebar_collapsed_' + currentUser) === 'true';
+    document.body.className = savedTheme + (isSidebarCollapsed ? ' sidebar-collapsed' : '');
+</script>
+
+<nav th:replace="~{layout/navbar :: navbar}"></nav>
+
+<div class="student-wrapper">
+    <aside th:replace="~{layout/student-sidebar :: sidebar}"></aside>
+
+    <main class="student-main-content">
+
+        <div class="enrollments-header">
+            <div class="header-titles">
+                <h2>My Enrollments</h2>
+                <p>Manage your class registrations and view your current academic progress.</p>
+            </div>
+
+            <div class="enrollment-filters">
+                <button class="filter-btn active" data-filter="ALL">All</button>
+                <button class="filter-btn" data-filter="ACTIVE">Active</button>
+                <button class="filter-btn" data-filter="PENDING">Pending</button>
+                <button class="filter-btn" data-filter="DROPPED">History</button>
+            </div>
+        </div>
+
+        <div id="enrollmentsGrid" class="enrollments-grid">
+            <div class="loading-spinner"><i class="fas fa-circle-notch fa-spin fa-2x"></i><p>Loading enrollments...</p></div>
+        </div>
+
+    </main>
+</div>
+
+<div id="dropConfirmModal" class="modal">
+    <div class="modal-content drop-modal-content">
+        <div class="modal-header">
+            <h2><i class="fas fa-exclamation-triangle" style="color: #e74c3c;"></i> Confirm Drop Request</h2>
+            <span class="close-btn" id="closeDropModalBtn">&times;</span>
+        </div>
+        <div class="modal-body">
+            <p>Are you sure you want to request dropping <strong id="dropCourseName">Course</strong>?</p>
+            <p class="warning-text">This action will change your status to <strong>PENDING_DROP</strong>.
+                An administrator must approve this request before you are officially removed from the class.</p>
+        </div>
+        <div class="modal-actions">
+            <button id="cancelDropBtn" class="btn-cancel">Cancel</button>
+            <button id="confirmDropBtn" class="btn-danger">Yes, Request Drop</button>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{layout/footer :: footer}"></footer>
+
+<script th:src="@{/js/api.js}"></script>
+<script th:src="@{/js/toast.js}"></script>
+<script th:src="@{/js/student-enrollments.js}"></script>
+</body>
+</html>

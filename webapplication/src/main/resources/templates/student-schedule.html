@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Schedule & Feed - Tutoring Management System</title>
+
+    <link th:href="@{/css/themes.css}" rel="stylesheet">
+    <link th:href="@{/css/navbar.css}" rel="stylesheet">
+    <link th:href="@{/css/footer.css}" rel="stylesheet">
+    <link th:href="@{/css/toast.css}" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link th:href="@{/css/student-layout.css}" rel="stylesheet">
+    <link th:href="@{/css/student-schedule.css}" rel="stylesheet">
+</head>
+<body>
+
+<script>
+    const savedTheme = localStorage.getItem('tms_theme') || 'theme-default';
+    const currentUser = localStorage.getItem('tms_current_user') || 'guest';
+
+    // read the sidebar state specifically for this user
+    const isSidebarCollapsed = localStorage.getItem('tms_sidebar_collapsed_' + currentUser) === 'true';
+
+    document.body.className = savedTheme + (isSidebarCollapsed ? ' sidebar-collapsed' : '');
+</script>
+
+<nav th:replace="~{layout/navbar :: navbar}"></nav>
+
+<div class="student-wrapper">
+    <aside th:replace="~{layout/student-sidebar :: sidebar}"></aside>
+
+    <main class="student-main-content">
+
+        <div class="schedule-header">
+            <div class="header-titles">
+                <h2>My Weekly Schedule</h2>
+                <p>Click on any scheduled class to view lesson details, homework, and lesson activities.</p>
+            </div>
+
+            <div class="week-navigator">
+                <button id="prevWeekBtn" class="nav-btn"><i class="fas fa-chevron-left"></i></button>
+                <span id="currentWeekRange" class="date-range-badge"><i class="far fa-calendar-alt"></i> Loading...</span>
+                <button id="nextWeekBtn" class="nav-btn"><i class="fas fa-chevron-right"></i></button>
+                <button id="todayBtn" class="nav-btn today-btn">Today</button>
+            </div>
+        </div>
+
+        <div id="scheduleGrid" class="schedule-grid">
+        </div>
+
+    </main>
+</div>
+
+<div id="lessonModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="modalCourseTitle">Course Title</h2>
+            <span class="close-btn" id="closeLessonModal">&times;</span>
+        </div>
+
+        <div class="modal-info-bar">
+            <span class="info-pill"><i class="fas fa-chalkboard-teacher"></i> <span id="modalTeacherName">Teacher</span></span>
+            <span class="info-pill"><i class="far fa-clock"></i> <span id="modalTime">Time</span></span>
+            <span class="info-pill" id="modalClassroomContainer"><i class="fas fa-map-marker-alt"></i> <span id="modalClassroom">Room</span></span>
+        </div>
+
+        <div class="modal-body" id="modalActivityBody">
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{layout/footer :: footer}"></footer>
+
+<script th:src="@{/js/api.js}"></script>
+<script th:src="@{/js/student-schedule.js}"></script>
+</body>
+</html>

@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audit & Overrides - Admin</title>
+
+    <link th:href="@{/css/themes.css}" rel="stylesheet">
+
+    <link th:href="@{/css/navbar.css}" rel="stylesheet">
+    <link th:href="@{/css/footer.css}" rel="stylesheet">
+
+    <link th:href="@{/css/toast.css}" rel="stylesheet">
+
+    <link th:href="@{/css/admin-layout.css}" rel="stylesheet">
+    <link th:href="@{/css/admin-audit.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<!-- ANTI-FOUC (Flash of Unstyled Content): Applies the theme instantly from localStorage before the browser
+has time to draw the HTML, preventing instantaneous "flashing" of colors. -->
+<script>
+    const savedTheme = localStorage.getItem('tms_theme') || 'theme-default';
+    const currentUser = localStorage.getItem('tms_current_user') || '';
+
+    // read the sidebar state specifically for this user
+    const isSidebarCollapsed = localStorage.getItem('tms_sidebar_collapsed_' + currentUser) === 'true';
+
+    document.body.className = savedTheme + (isSidebarCollapsed ? ' sidebar-collapsed' : '');
+</script>
+
+<nav th:replace="~{layout/navbar :: navbar}"></nav>
+
+<div class="admin-wrapper">
+
+    <aside th:replace="~{layout/admin-sidebar :: sidebar}"></aside>
+
+    <main class="admin-main-content">
+
+        <div class="module-header">
+            <div class="header-title">
+                <h2>Audit & Master Override</h2>
+                <p class="text-muted">Oversee system records, correct data entry errors, and perform administrative overrides.</p>
+            </div>
+        </div>
+
+        <div class="tabs-container">
+            <button class="tab-btn active" id="tabBtnAbsences">
+                <i class="fas fa-user-clock"></i> Teacher Absences
+            </button>
+            <button class="tab-btn" id="tabBtnActivities">
+                <i class="fas fa-clipboard-list"></i> Activities <span class="badge-count init-hidden" id="activitiesBadge">0</span>
+            </button>
+            <button class="tab-btn" id="tabBtnTests">
+                <i class="fas fa-file-alt"></i> Tests <span class="badge-count init-hidden" id="testsBadge">0</span>
+            </button>
+        </div>
+
+        <!-- Teacher Absences -->
+        <div class="tab-pane active" id="paneAbsences">
+
+            <div class="audit-filter-bar">
+                <div class="filter-group">
+                    <label for="filterTeacher"><i class="fas fa-chalkboard-teacher"></i> Teacher</label>
+                    <select id="filterTeacher" class="form-control">
+                        <option value="">-- All Teachers --</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="filterSlot"><i class="fas fa-calendar-alt"></i> Scheduled Class</label>
+                    <select id="filterSlot" class="form-control" disabled>
+                        <option value="">Select a teacher first...</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="filterStartDate"><i class="fas fa-step-forward"></i> Date From</label>
+                    <input type="date" id="filterStartDate" class="form-control">
+                </div>
+
+                <div class="filter-group">
+                    <label for="filterEndDate"><i class="fas fa-step-backward"></i> Date To</label>
+                    <input type="date" id="filterEndDate" class="form-control">
+                </div>
+
+                <div class="filter-actions">
+                    <button class="btn-action-sm btn-activate" id="searchAbsencesBtn"><i class="fas fa-search"></i> Search</button>
+                    <button class="btn-action-sm btn-reject" id="clearFiltersBtn"><i class="fas fa-times"></i> Clear</button>
+                </div>
+            </div>
+
+            <div id="absencesLoading" class="loading-spinner init-hidden">
+                <i class="fas fa-spinner fa-spin fa-2x"></i>
+                <p>Fetching records...</p>
+            </div>
+
+            <div id="absencesEmpty" class="empty-state init-hidden">
+                <i class="fas fa-check-circle fa-3x empty-state-icon text-success"></i>
+                <h4>No Absences Found</h4>
+                <p>There are currently no teacher absences recorded in the system.</p>
+            </div>
+
+            <div class="table-responsive" id="absencesTableContainer">
+                <table class="standard-table audit-table">
+                    <thead>
+                    <tr>
+                        <th>Teacher</th>
+                        <th>Day</th>
+                        <th>Date</th>
+                        <th>Scope / Course</th>
+                        <th>Reason</th>
+                        <th class="text-right">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody id="absencesTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Lesson Activities -->
+        <div class="tab-pane" id="paneActivities">
+            <div class="audit-filter-bar">
+                <div class="filter-group">
+                    <label for="filterActivityCourse"><i class="fas fa-book"></i> Course</label>
+                    <select id="filterActivityCourse" class="form-control">
+                        <option value="">-- All Courses --</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="filterActivityTeacher"><i class="fas fa-chalkboard-teacher"></i> Teacher</label>
+                    <select id="filterActivityTeacher" class="form-control">
+                        <option value="">-- All Teachers --</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="filterActivitySlot"><i class="fas fa-calendar-alt"></i> Scheduled Class</label>
+                    <select id="filterActivitySlot" class="form-control" disabled>
+                        <option value="">Select a teacher first...</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="filterActivityStartDate"><i class="fas fa-step-forward"></i> Date From</label>
+                    <input type="date" id="filterActivityStartDate" class="form-control">
+                </div>
+
+                <div class="filter-group">
+                    <label for="filterActivityEndDate"><i class="fas fa-step-backward"></i> Date To</label>
+                    <input type="date" id="filterActivityEndDate" class="form-control">
+                </div>
+
+                <div class="filter-actions">
+                    <button class="btn-action-sm btn-activate" id="searchActivitiesBtn"><i class="fas fa-search"></i> Search</button>
+                    <button class="btn-action-sm btn-reject" id="clearActivityFiltersBtn"><i class="fas fa-times"></i> Clear</button>
+                </div>
+            </div>
+
+            <div id="activitiesLoading" class="loading-spinner init-hidden">
+                <i class="fas fa-spinner fa-spin fa-2x"></i>
+                <p>Fetching activities...</p>
+            </div>
+            <div id="activitiesEmpty" class="empty-state init-hidden">
+                <i class="fas fa-check-circle fa-3x empty-state-icon text-success"></i>
+                <h4>No Activities Found</h4>
+                <p>No lesson activities match your search criteria.</p>
+            </div>
+
+            <div class="table-responsive init-hidden" id="activitiesTableContainer">
+                <table class="standard-table audit-table">
+                    <thead>
+                    <tr>
+                        <th>Course</th>
+                        <th>Teacher</th>
+                        <th>Day</th>
+                        <th>Date</th>
+                        <th>Description</th>
+                        <th class="text-right">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody id="activitiesTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tests & Test Results -->
+        <div class="tab-pane" id="paneTests">
+            <div class="audit-filter-bar">
+                <div class="filter-group">
+                    <label for="filterTestCourse"><i class="fas fa-book"></i> Course</label>
+                    <select id="filterTestCourse" class="form-control">
+                        <option value="">-- All Courses --</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="filterTestTeacher"><i class="fas fa-chalkboard-teacher"></i> Teacher</label>
+                    <select id="filterTestTeacher" class="form-control">
+                        <option value="">-- All Teachers --</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="filterTestStartDate"><i class="fas fa-step-forward"></i> Date From</label>
+                    <input type="date" id="filterTestStartDate" class="form-control">
+                </div>
+
+                <div class="filter-group">
+                    <label for="filterTestEndDate"><i class="fas fa-step-backward"></i> Date To</label>
+                    <input type="date" id="filterTestEndDate" class="form-control">
+                </div>
+
+                <div class="filter-actions">
+                    <button class="btn-action-sm btn-activate" id="searchTestsBtn"><i class="fas fa-search"></i> Search</button>
+                    <button class="btn-action-sm btn-reject" id="clearTestFiltersBtn"><i class="fas fa-times"></i> Clear</button>
+                </div>
+            </div>
+
+            <div id="testsLoading" class="loading-spinner init-hidden">
+                <i class="fas fa-spinner fa-spin fa-2x"></i>
+                <p>Fetching tests and results...</p>
+            </div>
+
+            <div id="testsEmpty" class="empty-state init-hidden">
+                <i class="fas fa-check-circle fa-3x empty-state-icon text-success"></i>
+                <h4>No Tests Found</h4>
+                <p>There are no tests matching your search criteria.</p>
+            </div>
+
+            <div class="table-responsive init-hidden" id="testsTableContainer">
+                <table class="standard-table audit-table">
+                    <thead>
+                    <tr>
+                        <th>Course</th>
+                        <th>Teacher</th>
+                        <th>Day</th>
+                        <th>Date</th>
+                        <th>Description</th>
+                        <th class="text-right">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody id="testsTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+</div>
+
+<!-- Modal for Teacher Absences -->
+<div id="editAbsenceModal" class="modal-overlay init-hidden">
+    <div class="modal-content modal-md">
+        <div class="modal-header">
+            <h3 id="editAbsenceModalTitle"><i class="fas fa-edit"></i> Edit Absence (Override)</h3>
+            <span class="close-modal" id="closeAbsenceModalBtn">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div id="editAbsenceAlert" class="modal-alert"></div>
+
+            <form id="editAbsenceForm" class="standard-form">
+                <input type="hidden" id="editAbsenceId">
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editAbsenceTeacher">Teacher</label>
+                        <input type="text" id="editAbsenceTeacher" class="form-control" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="editAbsenceDate">Date <span class="required">*</span></label>
+                        <input type="date" id="editAbsenceDate" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="editAbsenceReason">Reason <span class="required">*</span></label>
+                    <textarea id="editAbsenceReason" class="form-control" rows="2" required></textarea>
+                </div>
+
+                <div class="form-group override-box">
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="editAbsenceIsFullDay">
+                        <span class="checkmark"></span>
+                        <strong>Full-Day Absence</strong> (Clear class selection to apply to whole day)
+                    </label>
+                    <div id="slotInputContainer" class="mt-10">
+                        <label for="editAbsenceSlotId">Target Class <span class="required">*</span></label>
+                        <select id="editAbsenceSlotId" class="form-control">
+                            <option value="">-- Select a target Class --</option>
+                        </select>
+                        <small class="text-muted">Required if not a full-day absence.</small>
+                    </div>
+                </div>
+
+                <div class="modal-footer footer-spaced">
+                    <button type="button" class="btn-action-sm btn-reject" id="cancelAbsenceBtn">Cancel</button>
+                    <button type="submit" id="saveAbsenceBtn" class="btn-action btn-activate">
+                        <i class="fas fa-save"></i> Save Override
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Lesson Activities -->
+<div id="editActivityModal" class="modal-overlay init-hidden">
+    <div class="modal-content modal-md">
+        <div class="modal-header">
+            <h3 id="editActivityModalTitle"><i class="fas fa-edit"></i> Edit Activity (Override)</h3>
+            <span class="close-modal" id="closeActivityModalBtn">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div id="editActivityAlert" class="modal-alert"></div>
+
+            <form id="editActivityForm" class="standard-form">
+                <input type="hidden" id="editActivityId">
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editActivityCourse">Course</label>
+                        <input type="text" id="editActivityCourse" class="form-control" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="editActivityTeacher">Teacher</label>
+                        <input type="text" id="editActivityTeacher" class="form-control" disabled>
+                    </div>
+                </div>
+
+                <div class="form-group mt-10">
+                    <label for="editActivityDate">Date of Activity <span class="required">*</span></label>
+                    <input type="date" id="editActivityDate" class="form-control" required>
+                    <small class="text-muted">Must fall on the scheduled day of this class.</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="editActivityDescription">Activity Description / Syllabus <span class="required">*</span></label>
+                    <textarea id="editActivityDescription" class="form-control" rows="3" required></textarea>
+                </div>
+
+                <div class="modal-footer footer-spaced mt-10">
+                    <button type="button" class="btn-action-sm btn-reject" id="cancelActivityBtn">Cancel</button>
+                    <button type="submit" id="saveActivityBtn" class="btn-action btn-activate">
+                        <i class="fas fa-save"></i> Save Override
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Tests & Test Results -->
+<div id="editTestModal" class="modal-overlay init-hidden">
+    <div class="modal-content modal-lg">
+        <div class="modal-header">
+            <h3 id="editTestModalTitle"><i class="fas fa-edit"></i> Edit Test & Results (Override)</h3>
+            <span class="close-modal" id="closeTestModalBtn">&times;</span>
+        </div>
+        <div class="modal-body modal-body-scrollable">
+            <div id="editTestAlert" class="modal-alert"></div>
+
+            <form id="editTestForm" class="standard-form">
+                <input type="hidden" id="editTestId">
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editTestCourse">Course</label>
+                        <input type="text" id="editTestCourse" class="form-control" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="editTestTeacher">Teacher</label>
+                        <input type="text" id="editTestTeacher" class="form-control" disabled>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editTestDate">Date of Test <span class="required">*</span></label>
+                        <input type="date" id="editTestDate" class="form-control" required>
+                    </div>
+                    <div class="form-group flex-2">
+                        <label for="editTestDescription">Test Description <span class="required">*</span></label>
+                        <input type="text" id="editTestDescription" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="override-box override-box-compact mt-10">
+                    <label class="override-box-title">
+                        <i class="fas fa-user-graduate"></i> Student Results
+                    </label>
+                    <div class="table-responsive">
+                        <table class="standard-table nested-results-table">
+                            <thead>
+                            <tr>
+                                <th class="col-student">Student</th>
+                                <th class="col-grade text-center">Grade</th>
+                                <th class="text-center">Comments</th>
+                            </tr>
+                            </thead>
+                            <tbody id="editTestResultsBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="modal-footer footer-spaced mt-10">
+                    <button type="button" class="btn-action-sm btn-reject" id="cancelTestBtn">Cancel</button>
+                    <button type="submit" id="saveTestBtn" class="btn-action btn-activate">
+                        <i class="fas fa-save"></i> Save Override
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{layout/footer :: footer}"></footer>
+
+<script th:src="@{/js/api.js}"></script>
+<script th:src="@{/js/admin-audit.js}"></script>
+</body>
+</html>

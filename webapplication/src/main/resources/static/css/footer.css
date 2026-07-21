@@ -1,0 +1,16 @@
+/* Footer Styling */
+.main-footer {
+    background-color: var(--theme-primary);
+    color: var(--theme-text-light);
+    text-align: center;
+    padding: 20px 20px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: auto;
+}
+
+.main-footer p {
+    margin: 0;
+    font-size: 14px;
+    letter-spacing: 1px;
+}

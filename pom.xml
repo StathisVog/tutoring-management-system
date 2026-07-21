@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.2.5</version>
+		<relativePath/>
+	</parent>
+
+	<groupId>com.education.tutoring.management</groupId>
+	<artifactId>tutoring-management-system</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<modules>
+		<module>tutoring-system</module>
+		<module>webapplication</module>
+	</modules>
+
+	<properties>
+		<java.version>17</java.version>
+		<archunit-junit5.version>1.4.1</archunit-junit5.version>
+		<jmolecules.version>1.10.0</jmolecules.version>
+		<jmolecules-archunit.version>0.28.0</jmolecules-archunit.version>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+
+			<dependency>
+				<groupId>com.education.tutoring.management</groupId>
+				<artifactId>application</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.education.tutoring.management</groupId>
+				<artifactId>domain</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.education.tutoring.management</groupId>
+				<artifactId>rest</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.education.tutoring.management</groupId>
+				<artifactId>repository</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.tngtech.archunit</groupId>
+				<artifactId>archunit-junit5</artifactId>
+				<version>${archunit-junit5.version}</version>
+				<scope>test</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.jmolecules</groupId>
+				<artifactId>jmolecules-hexagonal-architecture</artifactId>
+				<version>${jmolecules.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.jmolecules.integrations</groupId>
+				<artifactId>jmolecules-archunit</artifactId>
+				<version>${jmolecules-archunit.version}</version>
+			</dependency>
+
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>io.spring.javaformat</groupId>
+				<artifactId>spring-javaformat-maven-plugin</artifactId>
+				<version>0.0.43</version>
+				<executions>
+					<execution>
+						<id>validate-format</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>validate</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

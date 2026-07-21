@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management - Admin</title>
+
+    <link th:href="@{/css/themes.css}" rel="stylesheet">
+
+    <link th:href="@{/css/navbar.css}" rel="stylesheet">
+    <link th:href="@{/css/footer.css}" rel="stylesheet">
+    <link th:href="@{/css/admin-layout.css}" rel="stylesheet">
+    <link th:href="@{/css/admin-users.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<!-- Flash of Unstyled Content -->
+<script>
+    const savedTheme = localStorage.getItem('tms_theme') || 'theme-default';
+    const currentUser = localStorage.getItem('tms_current_user') || '';
+
+    // read the sidebar state specifically for this user
+    const isSidebarCollapsed = localStorage.getItem('tms_sidebar_collapsed_' + currentUser) === 'true';
+
+    document.body.className = savedTheme + (isSidebarCollapsed ? ' sidebar-collapsed' : '');
+</script>
+
+<nav th:replace="~{layout/navbar :: navbar}"></nav>
+
+<div class="admin-wrapper">
+    <aside th:replace="~{layout/admin-sidebar :: sidebar}"></aside>
+
+    <main class="admin-main-content">
+        <div class="content-header">
+            <h2>User Management</h2>
+            <div class="header-actions">
+                <label for="userSearchInput"></label>
+                <input type="text" id="userSearchInput" class="search-input" placeholder="Search by username...">
+
+                <label for="statusFilter"></label>
+                <select id="statusFilter" class="filter-select">
+                    <option value="ALL">All Statuses</option>
+                    <option value="ACTIVE">Active Only</option>
+                    <option value="INACTIVE">Inactive Only</option>
+                </select>
+
+                <label for="roleFilter"></label>
+                <select id="roleFilter" class="filter-select">
+                    <option value="">All Roles</option>
+                    <option value="STUDENT">Students</option>
+                    <option value="TEACHER">Teachers</option>
+                    <option value="ADMIN">Admins</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="usersGrid" class="users-grid">
+            <div id="loadingIndicator" class="loading-spinner">Fetching users...</div>
+        </div>
+    </main>
+</div>
+
+<div id="userModal" class="modal-overlay">
+    <div class="modal-card">
+        <span id="closeModalBtn" class="close-btn">&times;</span>
+        <h3 id="modalTitle">User Details</h3>
+
+        <div class="user-details-grid" id="userDetailsContent">
+        </div>
+
+        <div id="modalAlert" class="modal-alert" style="display: none;"></div>
+
+        <div id="modalActions" class="modal-actions" style="display: none;">
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{layout/footer :: footer}"></footer>
+
+<script th:src="@{/js/api.js}"></script>
+<script th:src="@{/js/admin-users.js}"></script>
+</body>
+</html>

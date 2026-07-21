@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<aside th:fragment="sidebar" class="teacher-sidebar">
+    <div class="sidebar-header">
+        <h3 class="header-text">TEACHER PANEL</h3>
+        <i class="fas fa-chalkboard-teacher header-icon" style="display: none;"></i>
+    </div>
+
+    <ul class="sidebar-nav">
+        <li>
+            <!--/*@thymesVar id="currentUri" type="java.lang.String"*/-->
+            <a th:href="@{/teacher/schedule}"
+               th:class="${currentUri != null and #strings.startsWith(currentUri, '/teacher/schedule') ? 'active' : ''}">
+                <i class="fas fa-calendar-alt"></i> <span class="nav-text">My Schedule & Activities</span>
+            </a>
+        </li>
+        <li>
+            <!--/*@thymesVar id="currentUri" type="java.lang.String"*/-->
+            <a th:href="@{/teacher/tests}"
+               th:class="${currentUri != null and #strings.startsWith(currentUri, '/teacher/tests') ? 'active' : ''}">
+                <i class="fas fa-file-alt"></i> <span class="nav-text">Tests & Grading</span>
+            </a>
+        </li>
+        <li>
+            <!--/*@thymesVar id="currentUri" type="java.lang.String"*/-->
+            <a th:href="@{/teacher/absences}"
+               th:class="${currentUri != null and #strings.startsWith(currentUri, '/teacher/absences') ? 'active' : ''}">
+                <i class="fas fa-user-times"></i> <span class="nav-text">Absences</span>
+            </a>
+        </li>
+        <li>
+            <!--/*@thymesVar id="currentUri" type="java.lang.String"*/-->
+            <a th:href="@{/teacher/profile}"
+               th:class="${currentUri != null and #strings.startsWith(currentUri, '/teacher/profile') ? 'active' : ''}">
+                <i class="fas fa-user-cog"></i> <span class="nav-text">My Profile</span>
+            </a>
+        </li>
+    </ul>
+
+    <div class="sidebar-toggle-box">
+        <button id="sidebarToggleBtn" class="sidebar-toggle-btn">
+            <i class="fas fa-angle-double-left toggle-icon"></i> <span class="nav-text">Collapse Sidebar</span>
+        </button>
+    </div>
+</aside>
+
+</body>
+</html>

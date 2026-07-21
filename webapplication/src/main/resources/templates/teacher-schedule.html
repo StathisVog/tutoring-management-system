@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Schedule - Tutoring Management System</title>
+
+    <link th:href="@{/css/themes.css}" rel="stylesheet">
+
+    <link th:href="@{/css/navbar.css}" rel="stylesheet">
+    <link th:href="@{/css/footer.css}" rel="stylesheet">
+
+    <link th:href="@{/css/toast.css}" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link th:href="@{/css/teacher-layout.css}" rel="stylesheet">
+    <link th:href="@{/css/teacher-schedule.css}" rel="stylesheet">
+</head>
+<body>
+
+<!-- Flash of Unstyled Content -->
+<script>
+    const savedTheme = localStorage.getItem('tms_theme') || 'theme-default';
+    const currentUser = localStorage.getItem('tms_current_user') || '';
+
+    // read the sidebar state specifically for this user
+    const isSidebarCollapsed = localStorage.getItem('tms_sidebar_collapsed_' + currentUser) === 'true';
+
+    document.body.className = savedTheme + (isSidebarCollapsed ? ' sidebar-collapsed' : '');
+</script>
+
+<nav th:replace="~{layout/navbar :: navbar}"></nav>
+
+<div class="teacher-wrapper">
+    <aside th:replace="~{layout/teacher-sidebar :: sidebar}"></aside>
+
+    <main class="teacher-main-content">
+        <div class="schedule-header">
+            <div>
+                <h2>My Weekly Schedule</h2>
+                <p class="subtitle">Click on a scheduled class to manage your Lesson Logs & Plans.</p>
+            </div>
+
+            <div class="schedule-controls">
+                <button id="prevWeekBtn" class="btn-nav" title="Previous Week"><i class="fas fa-chevron-left"></i></button>
+
+                <div id="weekBadge" class="week-badge">
+                    <i class="fas fa-calendar-week"></i> <span id="weekRangeText">Loading dates...</span>
+                </div>
+
+                <button id="nextWeekBtn" class="btn-nav" title="Next Week"><i class="fas fa-chevron-right"></i></button>
+                <button id="todayBtn" class="btn-today" title="Go to Current Week">Today</button>
+            </div>
+        </div>
+
+        <div id="scheduleGrid" class="schedule-grid">
+            <div class="loading-spinner">Fetching your schedule...</div>
+        </div>
+    </main>
+
+    <div id="activityModal" class="modal-overlay d-none">
+        <div class="modal-content activity-modal">
+            <span id="closeActivityModalBtn" class="close-btn">&times;</span>
+
+            <div class="modal-header">
+                <h3 id="activityModalTitle">Lesson Log & Planner</h3>
+                <p id="activityModalSubtitle" class="subtitle">Computer Science - Junior High 2nd Year (IT LAB)</p>
+            </div>
+
+            <div id="activityAlert" class="alert d-none"></div>
+
+            <div class="activity-form-section">
+                <h4><i class="fas fa-plus-circle"></i> Add New Lesson Activity</h4>
+                <form id="activityForm">
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="activityDate">Lesson Activity Date * <small>(Must be between -14 and +30 days)</small></label>
+                            <input type="date" id="activityDate" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="activityDescription">Description / Topics Covered *</label>
+                        <textarea id="activityDescription" rows="3" placeholder="e.g., Introduction to Probability and Statistics." required></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" id="cancelEditBtn" class="btn-cancel d-none">Cancel Edit</button>
+                        <button type="submit" id="saveActivityBtn" class="btn-submit">Save Lesson Activity</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="activity-timeline-section">
+                <div class="timeline-header">
+                    <h4><i class="fas fa-history"></i> Lesson Activity History</h4>
+                    <div class="timeline-filters">
+                        <input type="date" id="timelineFilterFrom" title="Filter From Date">
+                        <span>-</span>
+                        <input type="date" id="timelineFilterTo" title="Filter To Date">
+                        <button type="button" id="clearTimelineFilterBtn" class="btn-clear-filter" title="Clear Filters"><i class="fas fa-times"></i></button>
+                    </div>
+                </div>
+                <div id="activityTimeline" class="timeline-container">
+                    <div class="loading-spinner">Loading history...</div>
+
+                    <div id="timelineFilterEmptyMsg" class="timeline-empty d-none">
+                        <i class="fas fa-search"></i>
+                        No lesson activities match the selected date range.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<footer th:replace="~{layout/footer :: footer}"></footer>
+
+<script th:src="@{/js/api.js}"></script>
+<script th:src="@{/js/teacher-schedule.js}"></script>
+</body>
+</html>

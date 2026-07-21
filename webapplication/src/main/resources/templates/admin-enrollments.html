@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enrollment Inbox - Admin</title>
+
+    <link th:href="@{/css/themes.css}" rel="stylesheet">
+
+    <link th:href="@{/css/navbar.css}" rel="stylesheet">
+    <link th:href="@{/css/footer.css}" rel="stylesheet">
+
+    <link th:href="@{/css/toast.css}" rel="stylesheet">
+
+    <link th:href="@{/css/admin-layout.css}" rel="stylesheet">
+    <link th:href="@{/css/admin-enrollments.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<!-- Flash of Unstyled Content -->
+<script>
+    const savedTheme = localStorage.getItem('tms_theme') || 'theme-default';
+    const currentUser = localStorage.getItem('tms_current_user') || '';
+
+    // read the sidebar state specifically for this user
+    const isSidebarCollapsed = localStorage.getItem('tms_sidebar_collapsed_' + currentUser) === 'true';
+
+    document.body.className = savedTheme + (isSidebarCollapsed ? ' sidebar-collapsed' : '');
+</script>
+
+<nav th:replace="~{layout/navbar :: navbar}"></nav>
+
+<div class="admin-container">
+
+    <aside th:replace="~{layout/admin-sidebar :: sidebar}"></aside>
+
+    <main class="admin-main-content">
+
+        <div class="module-header">
+            <div class="header-title">
+                <h2>Enrollment Inbox</h2>
+                <p class="text-muted">Manage pending enrollments and drop requests from students.</p>
+            </div>
+        </div>
+
+        <div class="tabs-container">
+            <button class="tab-btn active" id="tabBtnEnroll">
+                <i class="fas fa-user-plus"></i> Pending Enrolls <span class="badge-count" id="enrollCount">0</span>
+            </button>
+            <button class="tab-btn" id="tabBtnDrop">
+                <i class="fas fa-user-minus"></i> Drop Requests <span class="badge-count" id="dropCount">0</span>
+            </button>
+        </div>
+
+        <div class="tab-pane active" id="paneEnroll">
+            <div id="enrollLoading" class="loading-spinner init-hidden">
+                <i class="fas fa-spinner fa-spin fa-2x"></i>
+                <p>Loading requests...</p>
+            </div>
+
+            <div id="enrollEmpty" class="empty-state init-hidden">
+                <i class="fas fa-inbox fa-3x empty-state-icon"></i>
+                <h4>Inbox Zero!</h4>
+                <p>There are no pending enrollment requests.</p>
+            </div>
+
+            <div class="action-cards-list" id="enrollCardsContainer"></div>
+        </div>
+
+        <div class="tab-pane" id="paneDrop">
+            <div id="dropLoading" class="loading-spinner init-hidden">
+                <i class="fas fa-spinner fa-spin fa-2x"></i>
+                <p>Loading requests...</p>
+            </div>
+
+            <div id="dropEmpty" class="empty-state init-hidden">
+                <i class="fas fa-inbox fa-3x empty-state-icon"></i>
+                <h4>Inbox Zero!</h4>
+                <p>There are no pending drop requests.</p>
+            </div>
+
+            <div class="action-cards-list" id="dropCardsContainer"></div>
+        </div>
+
+    </main>
+
+</div>
+
+<footer th:replace="~{layout/footer :: footer}"></footer>
+
+<script th:src="@{/js/api.js}"></script>
+<script th:src="@{/js/admin-enrollments.js}"></script>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tests & Grading - Tutoring Management System</title>
+
+    <link th:href="@{/css/themes.css}" rel="stylesheet">
+
+    <link th:href="@{/css/navbar.css}" rel="stylesheet">
+    <link th:href="@{/css/footer.css}" rel="stylesheet">
+    <link th:href="@{/css/toast.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link th:href="@{/css/teacher-layout.css}" rel="stylesheet">
+    <link th:href="@{/css/teacher-tests.css}" rel="stylesheet">
+</head>
+<body>
+
+<!-- Flash of Unstyled Content -->
+<script>
+    const savedTheme = localStorage.getItem('tms_theme') || 'theme-default';
+    const currentUser = localStorage.getItem('tms_current_user') || '';
+
+    // read the sidebar state specifically for this user
+    const isSidebarCollapsed = localStorage.getItem('tms_sidebar_collapsed_' + currentUser) === 'true';
+
+    document.body.className = savedTheme + (isSidebarCollapsed ? ' sidebar-collapsed' : '');
+</script>
+
+<nav th:replace="~{layout/navbar :: navbar}"></nav>
+
+<div class="teacher-wrapper">
+    <aside th:replace="~{layout/teacher-sidebar :: sidebar}"></aside>
+
+    <main class="teacher-main-content">
+
+        <div id="testsDashboardView">
+            <div class="page-header">
+                <div>
+                    <h2>Tests & Grading</h2>
+                    <p class="subtitle">Manage your exams and grade your students.</p>
+                </div>
+                <button id="openCreateTestModalBtn" class="btn-primary">
+                    <i class="fas fa-plus"></i> Create New Test
+                </button>
+            </div>
+
+            <div class="filter-bar">
+                <div class="filter-group">
+                    <label for="filterFromDate">From:</label>
+                    <input type="date" id="filterFromDate">
+                </div>
+                <div class="filter-group">
+                    <label for="filterToDate">To:</label>
+                    <input type="date" id="filterToDate">
+                </div>
+                <button id="applyFilterBtn" class="btn-secondary">Filter</button>
+                <button id="clearFilterBtn" class="btn-outline">Clear</button>
+
+                <div class="filter-divider"></div>
+
+                <label for="filterSlot"></label>
+                <select id="filterSlot" class="slot-filter-select">
+                    <option value="ALL">All My Classes</option>
+                </select>
+            </div>
+
+            <div id="testsGrid" class="tests-grid">
+                <div class="loading-spinner">Loading your tests...</div>
+            </div>
+        </div>
+
+        <div id="rosterView" class="d-none">
+            <div class="page-header">
+                <div>
+                    <button id="backToTestsBtn" class="btn-back">
+                        <i class="fas fa-arrow-left"></i> Back to Tests
+                    </button>
+                    <h2 id="rosterCourseTitle">Course Name</h2>
+                    <p id="rosterTestDesc" class="subtitle">Test Description - Date</p>
+                </div>
+            </div>
+
+            <div class="roster-container">
+                <table class="roster-table">
+                    <thead>
+                    <tr>
+                        <th>Student Name</th>
+                        <th class="col-grade">Grade (0-20)</th>
+                        <th>Teacher Comments</th>
+                        <th class="col-action">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody id="rosterTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<div id="createTestModal" class="modal-overlay d-none">
+    <div class="modal-content test-modal">
+        <span id="closeTestModalBtn" class="close-btn">&times;</span>
+
+        <div class="modal-header">
+            <h3><i class="fas fa-file-signature"></i> Create New Test</h3>
+            <p class="subtitle">Assign a new exam to a specific class.</p>
+        </div>
+
+        <div id="testAlert" class="alert d-none"></div>
+
+        <form id="createTestForm">
+            <div class="form-group">
+                <label for="slotSelect">Select Class (Course & Time) *</label>
+                <select id="slotSelect" required>
+                    <option value="" disabled selected>Loading your classes...</option>
+                </select>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group date-width">
+                    <label for="testDate">Date of Exam *</label>
+                    <input type="date" id="testDate" required>
+                </div>
+                <div class="form-group title-width">
+                    <label for="testDescription">Test Title / Topics *</label>
+                    <input type="text" id="testDescription" placeholder="e.g., Final Exam - Chapter 1" required>
+                </div>
+            </div>
+
+            <div class="form-group advanced-section">
+                <label>Assignment Scope</label>
+                <div class="radio-group">
+                    <label class="radio-label">
+                        <input type="radio" name="assignmentScope" value="ALL" checked>
+                        Whole Class (All active students)
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="assignmentScope" value="SPECIFIC">
+                        Specific Students Only
+                    </label>
+                </div>
+
+                <div id="specificStudentsContainer" class="d-none student-checkboxes">
+                    <p class="text-muted small">Please select a class first to see students.</p>
+                </div>
+            </div>
+
+            <button type="submit" id="saveTestBtn" class="btn-submit">Assign Test</button>
+        </form>
+    </div>
+</div>
+
+<footer th:replace="~{layout/footer :: footer}"></footer>
+
+<script th:src="@{/js/api.js}"></script>
+<script th:src="@{/js/teacher-tests.js}"></script>
+</body>
+</html>

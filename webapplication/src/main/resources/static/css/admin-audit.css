@@ -1,0 +1,355 @@
+/* --- Main Layout Wrapper --- */
+.admin-wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* --- Tabs Navigation --- */
+.tabs-container {
+    display: flex;
+    border-bottom: 2px solid #ecf0f1;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+
+.tab-btn {
+    background: none;
+    border: none;
+    padding: 12px 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #7f8c8d;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.4s ease;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.tab-btn:hover {
+    color: #34495e;
+    background-color: #f8f9fa;
+}
+
+.tab-btn.active {
+    color: #2c3e50;
+    border-bottom-color: #9b59b6;
+}
+
+.tab-pane { display: none; }
+.tab-pane.active { display: block; }
+
+/* --- Audit Table & Filter Bar --- */
+.audit-filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-end;
+    background-color: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+    gap: 15px;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.filter-group label {
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: #34495e;
+}
+
+.filter-actions {
+    display: flex;
+    gap: 10px;
+    margin-left: auto; /* Pushes the buttons to the right */
+}
+
+/* --- Table Breathing Room --- */
+.audit-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.audit-table th, .audit-table td {
+    padding: 16px 20px;
+}
+
+.audit-table th {
+    background-color: #f8f9fa;
+    color: #34495e;
+    font-weight: 600;
+}
+
+.audit-table td {
+    vertical-align: middle;
+}
+
+/* --- Anti-Jumping for Sure Button --- */
+.actions-flex-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px;
+}
+
+.delete-btn-placeholder {
+    width: 85px;
+    display: flex;
+    justify-content: flex-end; /* keep the simple bucket to the right of the placeholder */
+}
+
+/* --- Badges --- */
+.scope-badge {
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.scope-full-day { background-color: #fdebd0; color: #d35400; }
+.scope-slot { background-color: #d4e6f1; color: #2980b9; }
+
+/* --- Action Buttons (Table & Sure State) --- */
+.btn-icon {
+    background: none; border: none; cursor: pointer; padding: 6px 10px;
+    border-radius: 4px; transition: all 0.2s ease;
+}
+
+.btn-icon-edit { color: #f39c12; }
+.btn-icon-edit:hover { background-color: #fef5e7; }
+.btn-icon-delete { color: #e74c3c; }
+.btn-icon-delete:hover { background-color: #fdedec; }
+
+/* Sure State for Table Delete Buttons */
+.btn-icon-delete.btn-sure-state {
+    background-color: #e74c3c; color: white;
+    font-size: 0.85rem; font-weight: bold; padding: 6px 12px;
+}
+
+.btn-icon-delete.btn-sure-state:hover { background-color: #c0392b; }
+
+.text-right { text-align: right; }
+.text-nowrap { white-space: nowrap; }
+.text-success { color: #2ecc71; }
+
+.mt-10 { margin-top: 10px; }
+
+/* --- Override Modal Box --- */
+.override-box {
+    background-color: #fdf2e9;
+    border-left: 4px solid #e67e22;
+    padding: 15px;
+    border-radius: 4px;
+    margin-top: 20px;
+}
+
+/* Nested Results Specifics */
+.override-box-compact { padding: 10px; }
+
+.override-box-title.override-box-title {
+    color: #d35400;
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.nested-results-table {
+    font-size: 0.9rem;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.nested-results-table th,
+.nested-results-table td {
+    text-align: left;
+    vertical-align: middle;
+}
+
+.nested-results-table .col-student { width: 20%; }
+.nested-results-table .col-grade { width: 100px; }
+
+.nested-results-table th.text-center {
+    text-align: center;
+}
+
+.init-hidden { display: none !important; }
+
+/* Modal & Form Styles (Imported for Audit Module) */
+
+/* --- Modal Overlay & Container --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    width: 100%;
+    overflow: hidden;
+    animation: modalFadeIn 0.3s ease;
+}
+
+/* Modal Sizes */
+.modal-md { max-width: 900px; }
+.modal-lg { max-width: 1200px; }
+
+/* --- Modal Header --- */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #2c3e50;
+}
+
+.close-modal {
+    font-size: 1.5rem;
+    color: #7f8c8d;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.close-modal:hover {
+    color: #e74c3c;
+}
+
+/* --- Modal Body & Forms --- */
+.modal-body {
+    padding: 20px;
+}
+
+/* Body Scrollable */
+.modal-body-scrollable {
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.standard-form .form-group {
+    margin-bottom: 15px;
+}
+
+.standard-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #34495e;
+    font-size: 0.9rem;
+}
+
+.standard-form .form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #bdc3c7;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 0.95rem;
+    transition: border-color 0.2s ease;
+}
+
+.standard-form .form-control:focus {
+    border-color: #9b59b6;
+    outline: none;
+}
+
+.standard-form .form-control:disabled {
+    background-color: #f4f7f6;
+    cursor: not-allowed;
+}
+
+.form-row {
+    display: flex;
+    gap: 15px;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+/* Flex Modifiers */
+.form-row .form-group.flex-2 {
+    flex: 2;
+}
+
+.required {
+    color: #e74c3c;
+}
+
+/* --- Checkbox Styling (Override Box) --- */
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+
+/* --- Modal Footer --- */
+.modal-footer {
+    padding: 15px 20px;
+    background-color: #f8f9fa;
+    border-top: 1px solid #ecf0f1;
+    display: flex;
+    align-items: center;
+}
+
+.footer-spaced {
+    justify-content: space-between;
+}
+
+/* --- Animations --- */
+@keyframes modalFadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Modal Alerts --- */
+.modal-alert {
+    display: none; /* Hidden by default */
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.modal-alert.alert-danger {
+    background-color: #fdedec;
+    color: #c0392b;
+    border: 1px solid #fadbd8;
+}
+
+.modal-alert.alert-success {
+    background-color: #eafaf1;
+    color: #27ae60;
+    border: 1px solid #d5f5e3;
+}

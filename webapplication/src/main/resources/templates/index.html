@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Tutoring Management System</title>
+
+    <link th:href="@{/css/themes.css}" rel="stylesheet">
+
+    <link th:href="@{/css/navbar.css}" rel="stylesheet">
+    <link th:href="@{/css/footer.css}" rel="stylesheet">
+    <link th:href="@{/css/index.css}" rel="stylesheet">
+</head>
+<body>
+
+<nav th:replace="~{layout/navbar :: navbar}"></nav>
+
+<main>
+
+    <section class="hero">
+        <h1>Welcome to Your Learning Journey</h1>
+        <p>Discover a place where expert teachers and passionate students come together. Explore our courses, track your progress, and achieve your
+            academic goals with ease.</p>
+        <a th:href="@{/register}" class="btn-cta" id="heroCtaBtn">Start Learning Today</a>
+    </section>
+
+    <section class="features">
+        <div class="feature-card">
+            <h3>Explore Our Courses</h3>
+            <p>Browse a wide variety of subjects tailored to every grade level. Find the perfect class to boost your knowledge and skills.</p>
+        </div>
+
+        <div class="feature-card">
+            <h3>Organized Timetables</h3>
+            <p>Stay on top of your weekly schedule. Easily check class times, assigned teachers, and room numbers so you never miss a beat.</p>
+        </div>
+
+        <div class="feature-card">
+            <h3>Track Your Success</h3>
+            <p>Get real-time updates on your enrollments, monitor your grades, and receive valuable feedback directly from your instructors.</p>
+        </div>
+    </section>
+
+</main>
+
+<footer th:replace="~{layout/footer :: footer}"></footer>
+
+<script th:src="@{/js/api.js}"></script>
+<script th:src="@{/js/index.js}"></script>
+</body>
+</html>

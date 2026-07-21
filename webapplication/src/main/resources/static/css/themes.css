@@ -1,0 +1,77 @@
+/**
+ * Global Theme Variables for Tutoring Management System
+ */
+
+/* Default Theme (Dark Blue)  */
+:root {
+    --theme-primary: #2c3e50;      /* Main background for Navbar/Sidebar */
+    --theme-secondary: #3498db;    /* Accents, Buttons, Links */
+    --theme-accent: #1abc9c;       /* Active states, Success elements */
+    --theme-text-light: #ffffff;   /* Text on dark backgrounds */
+    --theme-bg-light: #f4f6f9;     /* Main body background */
+    --theme-danger: #e74c3c;       /* Logout, Errors, Deletions */
+}
+
+/* Royal Purple */
+body.theme-purple {
+    --theme-primary: #4b3e65;
+    --theme-secondary: #9b59b6;
+    --theme-accent: #8e44ad;
+}
+
+/* Midnight Teal */
+body.theme-teal {
+    --theme-primary: #1f3a3d;
+    --theme-secondary: #008080;
+    --theme-accent: #20b2aa;
+}
+
+/* Crimson Red */
+body.theme-red {
+    --theme-primary: #641e16;
+    --theme-secondary: #e74c3c;
+    --theme-accent: #c0392b;
+}
+
+/* Forest Green */
+body.theme-green {
+    --theme-primary: #1e5631;
+    --theme-secondary: #27ae60;
+    --theme-accent: #2ecc71;
+}
+
+/* High-Contrast Dark */
+body.theme-dark {
+    --theme-primary: #121212;
+    --theme-secondary: #bb86fc;
+    --theme-accent: #03dac6;
+    --theme-bg-light: #2d2d2d;
+}
+
+/* Sunset Orange */
+body.theme-orange {
+    --theme-primary: #4e342e;
+    --theme-secondary: #e67e22;
+    --theme-accent: #d35400;
+}
+
+/* Slate Gray */
+body.theme-slate {
+    --theme-primary: #455a64;
+    --theme-secondary: #4db6ac;
+    --theme-accent: #26a69a;
+}
+
+/* Onyx & Mustard */
+body.theme-mustard {
+    --theme-primary: #212121;
+    --theme-secondary: #f1c40f;
+    --theme-accent: #f39c12;
+}
+
+/* Plum & Ruby */
+body.theme-pink {
+    --theme-primary: #4a235a;
+    --theme-secondary: #e83e8c;
+    --theme-accent: #d81b60;
+}

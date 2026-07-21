@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curriculum Management - Admin</title>
+
+    <link th:href="@{/css/themes.css}" rel="stylesheet">
+
+    <link th:href="@{/css/navbar.css}" rel="stylesheet">
+    <link th:href="@{/css/footer.css}" rel="stylesheet">
+    <link th:href="@{/css/admin-layout.css}" rel="stylesheet">
+    <link th:href="@{/css/admin-courses.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<!-- Flash of Unstyled Content -->
+<script>
+    const savedTheme = localStorage.getItem('tms_theme') || 'theme-default';
+    const currentUser = localStorage.getItem('tms_current_user') || '';
+
+    // read the sidebar state specifically for this user
+    const isSidebarCollapsed = localStorage.getItem('tms_sidebar_collapsed_' + currentUser) === 'true';
+
+    document.body.className = savedTheme + (isSidebarCollapsed ? ' sidebar-collapsed' : '');
+</script>
+
+<nav th:replace="~{layout/navbar :: navbar}"></nav>
+
+<div class="admin-wrapper">
+    <aside th:replace="~{layout/admin-sidebar :: sidebar}"></aside>
+
+    <main class="admin-main-content">
+        <div class="content-header">
+            <h2>Curriculum Management</h2>
+            <div class="header-actions">
+                <label for="courseSearchInput"></label>
+                <input type="text" id="courseSearchInput" class="search-input" placeholder="Search courses...">
+
+                <label for="courseStatusFilter"></label>
+                <select id="courseStatusFilter" class="status-filter">
+                    <option value="all">All Statuses</option>
+                    <option value="active">Active Only</option>
+                    <option value="inactive">Inactive Only</option>
+                </select>
+
+                <button id="openCreateModalBtn" class="btn-action btn-activate">+ Create New Course</button>
+            </div>
+        </div>
+
+        <div id="coursesGrid" class="courses-grid">
+            <div id="loadingIndicator" class="loading-spinner">Fetching courses...</div>
+        </div>
+    </main>
+</div>
+
+<div id="courseModal" class="modal-overlay">
+    <div class="modal-card modal-large">
+        <span id="closeModalBtn" class="close-btn">&times;</span>
+        <h3 id="modalTitle">Course Management</h3>
+
+        <div class="modal-tabs">
+            <button class="tab-btn active" data-tab="tabCourseInfo">Course Details</button>
+            <button class="tab-btn" data-tab="tabTeachers">Assigned Teachers</button>
+        </div>
+
+        <div id="modalAlert" class="modal-alert" style="display: none;"></div>
+
+        <!-- Courses -->
+        <div id="tabCourseInfo" class="tab-content active">
+            <form id="courseForm" class="course-form">
+                <div class="form-group">
+                    <label for="courseTitle">Title <span class="required">*</span></label>
+                    <input type="text" id="courseTitle" required minlength="3" maxlength="100">
+                </div>
+
+                <div class="form-group">
+                    <label for="courseGrade">Grade Level <span class="required">*</span></label>
+                    <select id="courseGrade" required>
+                        <option value="" disabled selected>-- Select Grade Level --</option>
+                        <option value="A_GUMNASIOU">Junior High School - 1st Year</option>
+                        <option value="B_GUMNASIOU">Junior High School - 2nd Year</option>
+                        <option value="C_GUMNASIOU">Junior High School - 3rd Year</option>
+                        <option value="A_LUKEIOU">High School - 1st Year</option>
+                        <option value="B_LUKEIOU">High School - 2nd Year</option>
+                        <option value="C_LUKEIOU">High School - 3rd Year</option>
+                    </select>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="courseDescription">Description</label>
+                    <textarea id="courseDescription" rows="4" maxlength="500"></textarea>
+                </div>
+
+                <div class="form-group full-width" id="statusToggleGroup" style="display: none;">
+                    <label class="toggle-label">
+                        <input type="checkbox" id="courseActiveStatus">
+                        <span class="toggle-text">Course is Active (Visible to students)</span>
+                    </label>
+                </div>
+
+                <div id="standardActions" class="modal-actions">
+                    <button type="button" id="deleteCourseBtn" class="btn-action btn-delete" style="display: none;">Delete Course</button>
+                    <button type="submit" id="saveCourseBtn" class="btn-action btn-save">Save Course</button>
+                </div>
+
+                <div id="deleteConfirmActions" class="delete-confirm-box full-width" style="display: none; margin-top: 20px;">
+                    <div style="display: flex; gap: 10px;">
+                        <button type="button" id="confirmDeleteBtn" class="btn-action btn-delete">Yes, Delete!</button>
+                        <button type="button" id="cancelDeleteBtn" class="btn-action btn-cancel">Cancel</button>
+                    </div>
+                    <span class="delete-confirm-text"><i class="fas fa-exclamation-triangle"></i>
+                        Permanently delete this course? This action cannot be undone.
+                    </span>
+                </div>
+            </form>
+        </div>
+
+        <!-- Assignments -->
+        <div id="tabTeachers" class="tab-content">
+
+            <div id="teacherLockState" class="empty-state">
+                <h4>Course not saved yet</h4>
+                <p>Please click "Create Course" first to save the course before assigning teachers.</p>
+            </div>
+
+            <div id="teacherActiveState" style="display: none;">
+
+                <div id="teacherAlert" class="modal-alert" style="display: none; margin-bottom: 20px;"></div>
+
+                <div class="assignment-section">
+                    <h4 class="section-subtitle">Assign New Teacher</h4>
+                    <div class="assign-controls">
+                        <label for="availableTeachersSelect"></label>
+                        <select id="availableTeachersSelect" class="form-select">
+                            <option value="">Loading teachers...</option>
+                        </select>
+                        <button id="assignTeacherBtn" class="btn-action btn-activate">Assign</button>
+                    </div>
+                </div>
+
+                <div class="assignment-section" style="margin-top: 30px;">
+                    <h4 class="section-subtitle">Currently Assigned</h4>
+                    <div id="assignedTeachersList" class="assigned-list">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<footer th:replace="~{layout/footer :: footer}"></footer>
+
+<script th:src="@{/js/api.js}"></script>
+<script th:src="@{/js/admin-courses.js}"></script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: tutoring-management-system
+
+  sql:
+    init:
+      mode: always
+      continue-on-error: true
+      schema-locations: classpath:database_schema/schema.sql
+
+  # Java JSON Web Token (JJWT)
+  jwt:
+    secret: c006ef539e4cf9a386f942526c238a8e9c2eadef35232fd6bb13063ef0e73d74
+    expiration: 86400000
+
+  datasource:
+    url: jdbc:mysql://localhost:3307/tutoring_management?useSSL=false&serverTimezone=UTC&createDatabaseIfNotExist=true
+    username: root
+    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    open-in-view: false
+    defer-datasource-initialization: false
+  #        dialect: org.hibernate.dialect.MySQLDialect
+
+  thymeleaf:
+    cache: false
+
+server:
+  port: 8080
+
+# Swagger Documentation
+springdoc:
+  swagger-ui:
+    path: /docs

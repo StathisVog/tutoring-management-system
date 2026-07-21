@@ -1,0 +1,576 @@
+.schedule-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.schedule-header h2 {
+    color: #2c3e50;
+    margin: 0 0 5px 0;
+}
+
+.schedule-header .subtitle {
+    color: #7f8c8d;
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.week-badge {
+    background-color: #e8f4fd;
+    color: #4f85d4;
+    padding: 10px 15px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border: 1px solid #d0e7fb;
+}
+
+/* --- GRID ARCHITECTURE --- */
+.schedule-grid {
+    display: grid;
+    /* Desktop First: 7 Columns, one for each day */
+    grid-template-columns: repeat(7, 1fr);
+    gap: 15px;
+    align-items: start; /* Keeps columns independent in height */
+}
+
+/* Column of Every Day */
+.day-column {
+    background: #ffffff;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    border: 1px solid #ecf0f1;
+    overflow: hidden;
+}
+
+.day-header {
+    background-color: #34495e;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    border-bottom: 2px solid #2c3e50;
+}
+
+.day-name {
+    display: block;
+    font-weight: bold;
+    font-size: 0.95rem;
+}
+
+.day-date {
+    display: block;
+    font-size: 0.8rem;
+    color: #bdc3c7;
+    margin-top: 2px;
+}
+
+.slots-container {
+    padding: 10px;
+    min-height: 80px; /* The column should not appear empty if it has no lessons */
+}
+
+.no-slots-msg {
+    text-align: center;
+    color: #bdc3c7;
+    font-size: 0.85rem;
+    font-style: italic;
+    padding: 15px 0;
+}
+
+/* Lesson Card */
+.slot-card {
+    background: #f8f9fa;
+    border: 1px solid #dfe6e9;
+    border-left: 4px solid #4f85d4;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 10px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+}
+
+.slot-card:last-child {
+    margin-bottom: 0;
+}
+
+.slot-card.is-scheduled {
+    cursor: pointer;
+}
+
+.slot-card.is-scheduled:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-left-color: #2980b9;
+}
+
+/* Cancelled Courses */
+.slot-card.is-cancelled {
+    border-left-color: #e74c3c;
+    cursor: pointer;
+}
+
+.slot-card.is-cancelled:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-left-color: #c0392b;
+}
+
+.course-title {
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 0.9rem;
+    margin: 0 0 8px 0;
+}
+
+.slot-detail {
+    font-size: 0.8rem;
+    color: #7f8c8d;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* The Student Badge */
+.students-badge {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+.students-badge.has-students {
+    background-color: #e8f8f5;
+    color: #27ae60;
+    border: 1px solid #d1f2eb;
+}
+
+.students-badge.no-students {
+    background-color: #fcf3cf;
+    color: #f39c12;
+    border: 1px solid #fae596;
+}
+
+.cancelled-reason {
+    color: #e74c3c;
+    font-size: 0.75rem;
+    font-weight: bold;
+    margin-top: 5px;
+    display: block;
+}
+
+/* Alerts */
+.alert {
+    padding: 12px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Errors */
+.alert-danger {
+    background-color: #fdeaea;
+    color: #e74c3c;
+    border: 1px solid #fad4d4;
+}
+
+/* Warnings / Cancelled Lessons */
+.alert-warning {
+    background-color: #fcf3cf;
+    color: #f39c12;
+    border: 1px solid #fae596;
+}
+
+/* Info / Editing */
+.alert-info {
+    background-color: #e8f4fd;
+    color: #3498db;
+    border: 1px solid #d0e7fb;
+}
+
+/* Utilities */
+.d-none {
+    display: none !important;
+}
+
+.schedule-grid .loading-spinner,
+.schedule-grid .grid-error-msg,
+.schedule-grid .grid-empty-msg {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: #7f8c8d;
+    padding: 40px;
+    font-weight: 500;
+}
+
+.schedule-grid .grid-error-msg {
+    color: #e74c3c;
+}
+
+/* --- MODAL STYLING --- */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(3px);
+}
+
+.activity-modal {
+    background: #ffffff;
+    width: 90%;
+    max-width: 800px;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    padding: 30px;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 24px;
+    color: #7f8c8d;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.close-btn:hover { color: #e74c3c; }
+
+.activity-modal .modal-header {
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ecf0f1;
+    padding-bottom: 15px;
+}
+
+.activity-modal .modal-header h3 {
+    margin: 0; color: #2c3e50;
+    font-size: 1.4rem;
+}
+
+.activity-modal .modal-header .subtitle {
+    margin: 5px 0 0 0;
+    color: #4f85d4;
+    font-weight: 500;
+}
+
+/* Form Section */
+.activity-form-section {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 6px;
+    margin-bottom: 25px;
+    border: 1px solid #dfe6e9;
+}
+
+.activity-form-section h4 {
+    margin: 0 0 15px 0;
+    color: #34495e;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* --- Disabled Form State (for 0 students) --- */
+.activity-form-section.form-disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.activity-form-section.form-disabled input,
+.activity-form-section.form-disabled textarea,
+.activity-form-section.form-disabled button {
+    pointer-events: none;
+}
+
+.form-group { margin-bottom: 15px; }
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 6px;
+    font-size: 0.9rem;
+}
+
+.form-group label small {
+    font-weight: normal;
+    color: #7f8c8d;
+}
+
+.form-group input, .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #bdc3c7;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+.form-group input:focus, .form-group textarea:focus {
+    border-color: #4f85d4;
+    outline: none;
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-cancel {
+    background-color: #95a5a6;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    flex: 1;
+    transition: background 0.3s;
+}
+
+.btn-cancel:hover {
+    background-color: #7f8c8d;
+}
+
+.btn-submit {
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s;
+    flex: 2; /* Gives double the space in Save */
+}
+
+.btn-submit:hover {
+    background-color: #219653;
+}
+
+.btn-submit:disabled {
+    background-color: #95a5a6;
+    cursor: not-allowed;
+}
+
+/* --- Timeline Actions (Edit & Delete) --- */
+.timeline-actions {
+    margin-top: 10px;
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+.btn-act {
+    background: none;
+    border: none;
+    font-size: 0.85rem;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.btn-edit { color: #f39c12; }
+.btn-edit:hover { background-color: #fef5e7; }
+
+.btn-delete { color: #e74c3c; }
+.btn-delete:hover { background-color: #fdeaea; }
+.btn-delete.confirming { background-color: #e74c3c; color: white; }
+
+/* --- Timeline Section & Scroll Lock --- */
+.timeline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #ecf0f1;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.activity-timeline-section h4 {
+    margin: 0;
+    color: #34495e;
+}
+
+.timeline-filters {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.timeline-filters input[type="date"] {
+    padding: 5px 8px;
+    border: 1px solid #bdc3c7;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    color: #2c3e50;
+    outline: none;
+}
+
+.timeline-filters input[type="date"]:focus { border-color: #4f85d4; }
+
+.btn-clear-filter {
+    background: none;
+    border: none;
+    color: #95a5a6;
+    cursor: pointer;
+    padding: 5px;
+    font-size: 1rem;
+    transition: color 0.2s;
+}
+.btn-clear-filter:hover { color: #e74c3c; }
+
+/* Scroll inside the modal */
+.timeline-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-height: 380px;
+    overflow-y: auto;  /* Enables vertical scrolling */
+    padding-right: 8px; /* Leaves space for the scroll bar */
+}
+
+/* scroll bar (timeline only) */
+.timeline-container::-webkit-scrollbar { width: 6px; }
+.timeline-container::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+.timeline-container::-webkit-scrollbar-thumb { background: #bdc3c7; border-radius: 4px; }
+.timeline-container::-webkit-scrollbar-thumb:hover { background: #95a5a6; }
+
+.timeline-card {
+    border-left: 4px solid #3498db;
+    background: #ffffff;
+    padding: 15px;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    position: relative;
+}
+
+.timeline-card.frozen { border-left-color: #95a5a6; background: #fdfdfd; }
+
+.timeline-date {
+    font-weight: bold;
+    color: #2c3e50;
+    font-size: 0.95rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.badge-frozen {
+    background: #ecf0f1;
+    color: #7f8c8d;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    border: 1px solid #bdc3c7;
+}
+
+.timeline-desc {
+    color: #555;
+    font-size: 0.9rem;
+    margin: 0;
+    line-height: 1.5;
+    white-space: pre-wrap;
+}
+
+.timeline-empty {
+    text-align: center;
+    color: #7f8c8d;
+    padding: 20px;
+    font-style: italic;
+}
+
+.timeline-empty i {
+    font-size: 2rem;
+    color: #bdc3c7;
+    margin-bottom: 10px;
+    display: block;
+}
+
+/* Previous & Next Buttons */
+.schedule-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-nav, .btn-today {
+    background-color: #ffffff;
+    border: 1px solid #bdc3c7;
+    color: #2c3e50;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-nav:hover, .btn-today:hover {
+    background-color: #ecf0f1;
+    border-color: #95a5a6;
+}
+
+.btn-nav:disabled {
+    background-color: #f8f9fa;
+    color: #bdc3c7;
+    border-color: #ecf0f1;
+    cursor: not-allowed;
+}
+
+.btn-today {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: #4f85d4;
+    border-color: #4f85d4;
+}
+
+.btn-today:hover {
+    background-color: #e8f4fd;
+}
+
+/* --- MEDIA QUERIES --- */
+
+/* Tablets: break the 7 columns into 3 or 4 so they are not crowded */
+@media (max-width: 1200px) {
+    .schedule-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Mobile phones: 1 Column, one day below the other */
+@media (max-width: 768px) {
+    .teacher-wrapper {
+        flex-direction: column;
+    }
+    .teacher-sidebar {
+        width: 100%;
+        height: auto;
+    }
+    .schedule-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    .schedule-grid {
+        grid-template-columns: 1fr;
+    }
+}

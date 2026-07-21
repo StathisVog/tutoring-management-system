@@ -1,0 +1,62 @@
+/* Container that always sits on the top right */
+#global-toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    pointer-events: none; /* To not block clicks from below when empty */
+}
+
+/* The message card */
+.toast-msg {
+    min-width: 250px;
+    max-width: 350px;
+    padding: 15px 20px;
+    border-radius: 6px;
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    font-size: 0.95rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    pointer-events: auto; /* Allows clicking on the toast itself */
+
+    /* Initial appearance animation */
+    opacity: 0;
+    transform: translateX(100%);
+    animation: slideInRight 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* Vanishing effect */
+.toast-msg.fade-out {
+    animation: fadeOutRight 0.3s ease-in forwards;
+}
+
+/* Colors (Success, Danger, Info) */
+.toast-success {
+    background-color: #27ae60;
+    border-left: 6px solid #1e8449;
+}
+
+.toast-danger {
+    background-color: #e74c3c;
+    border-left: 6px solid #c0392b;
+}
+
+.toast-info {
+    background-color: #3498db;
+    border-left: 6px solid #2980b9;
+}
+
+/* Keyframes for the dance slide */
+@keyframes slideInRight {
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes fadeOutRight {
+    to { transform: translateX(100%); opacity: 0; }
+}

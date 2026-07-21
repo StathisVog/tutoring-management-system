@@ -1,0 +1,405 @@
+/* Profile Header */
+.profile-header {
+    margin-bottom: 30px;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.05);
+    padding-bottom: 15px;
+}
+
+.profile-header h2 {
+    color: var(--theme-primary);
+    margin: 0 0 10px 0;
+    font-size: 28px;
+}
+
+.profile-header p {
+    color: #7f8c8d;
+    margin: 0;
+}
+
+/* Profile Container & Tabs */
+.profile-container {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    overflow: hidden;
+}
+
+.tab-menu {
+    display: flex;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.tab-btn {
+    flex: 1;
+    background: none;
+    border: none;
+    padding: 15px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #7f8c8d;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-bottom: 3px solid transparent;
+}
+
+.tab-btn i {
+    margin-right: 8px;
+}
+
+.tab-btn:hover {
+    color: var(--theme-secondary);
+    background-color: rgba(0,0,0,0.02);
+}
+
+.tab-btn.active {
+    color: var(--theme-primary);
+    border-bottom-color: var(--theme-secondary);
+    background-color: #ffffff;
+}
+
+/* Tab Content Areas */
+.tab-content-container {
+    padding: 30px;
+}
+
+.tab-panel {
+    display: none; /* Hidden by default */
+    animation: fadeIn 0.4s ease;
+}
+
+.tab-panel.active {
+    display: block; /* Shown when active */
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Forms Styling (Reusable across all tabs) */
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#teacherFields, #studentFields {
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+}
+
+.form-row textarea {
+    resize: vertical;
+}
+
+.form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group.full-width {
+    width: 100%;
+}
+
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--theme-primary);
+}
+
+.form-group input,
+.form-group textarea {
+    padding: 12px 15px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 15px;
+    font-family: inherit;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--theme-secondary);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+.input-readonly {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+    color: #6c757d;
+}
+
+.form-actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn-save {
+    background-color: var(--theme-secondary);
+    color: #fff;
+    border: none;
+    padding: 12px 25px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-save:hover {
+    filter: brightness(0.9);
+}
+
+/* Section Headers inside Tabs */
+.profile-section-header {
+    margin-bottom: 25px;
+}
+
+.profile-section-header h3 {
+    color: var(--theme-primary);
+    margin: 0 0 5px 0;
+    font-size: 20px;
+}
+
+.profile-section-header p {
+    color: #7f8c8d;
+    margin: 0;
+    font-size: 14px;
+}
+
+/* Theme Grid */
+.theme-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.theme-card {
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: #ffffff;
+}
+
+.theme-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+    border-color: #bdc3c7;
+}
+
+/* When the radio button inside the card is checked, highlight the card */
+.theme-card:has(input[type="radio"]:checked) {
+    border-color: var(--theme-secondary);
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.theme-preview {
+    height: 100px;
+    width: 100%;
+}
+
+.theme-info {
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    color: #2c3e50;
+    border-top: 1px solid #e9ecef;
+}
+
+.theme-info input[type="radio"] {
+    cursor: pointer;
+    transform: scale(1.2);
+    accent-color: var(--theme-secondary);
+}
+
+.preview-default { background: linear-gradient(135deg, #2c3e50 50%, #3498db 50%); }
+.preview-purple  { background: linear-gradient(135deg, #4b3e65 50%, #9b59b6 50%); }
+.preview-teal    { background: linear-gradient(135deg, #1f3a3d 50%, #008080 50%); }
+.preview-red     { background: linear-gradient(135deg, #641e16 50%, #e74c3c 50%); }
+.preview-green   { background: linear-gradient(135deg, #1e5631 50%, #27ae60 50%); }
+.preview-dark    { background: linear-gradient(135deg, #121212 50%, #bb86fc 50%); }
+.preview-orange  { background: linear-gradient(135deg, #4e342e 50%, #e67e22 50%); }
+.preview-slate   { background: linear-gradient(135deg, #455a64 50%, #4db6ac 50%); }
+.preview-mustard { background: linear-gradient(135deg, #212121 50%, #f1c40f 50%); }
+.preview-pink    { background: linear-gradient(135deg, #4a235a 50%, #e83e8c 50%); }
+
+/* --- Security Tab Specific Styles --- */
+.password-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-input-wrapper input {
+    width: 100%;
+    padding-right: 40px;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    color: #7f8c8d;
+    cursor: pointer;
+    padding: 5px;
+    transition: color 0.3s ease;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toggle-password:hover {
+    color: var(--theme-secondary);
+}
+
+.form-hint {
+    font-size: 12px;
+    color: #95a5a6;
+    margin-top: 6px;
+    display: block;
+}
+
+/* Disabling the default "eye" that the browser automatically sets */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+    display: none;
+}
+
+/* --- Accordion Styling (<details>) --- */
+.premium-accordion {
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+}
+
+.premium-accordion summary {
+    padding: 15px 20px;
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--theme-primary);
+    cursor: pointer;
+    background-color: #f8f9fa;
+    list-style: none; /* Hides the default arrow in some browsers */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background-color 0.3s;
+}
+
+.premium-accordion summary::-webkit-details-marker {
+    display: none;
+}
+
+.premium-accordion summary:hover {
+    background-color: #e9ecef;
+}
+
+/* Custom arrow that rotates when opened */
+.premium-accordion summary::after {
+    content: '\f107'; /* FontAwesome angle-down */
+    font-family: 'Font Awesome 6 Free', sans-serif;
+    font-weight: 900;
+    margin-left: auto;
+    transition: transform 0.3s ease;
+}
+
+.premium-accordion[open] summary::after {
+    transform: rotate(180deg);
+}
+
+.accordion-content {
+    padding: 20px;
+    border-top: 1px solid #e9ecef;
+}
+
+/* --- Avatar Grid --- */
+.avatar-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 20px;
+    justify-items: center;
+}
+
+.avatar-card {
+    cursor: pointer;
+    border-radius: 50%;
+    padding: 4px;
+    border: 3px solid transparent;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* hide the round circle of Radio */
+.avatar-card input[type="radio"] {
+    display: none;
+}
+
+.avatar-card img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: var(--theme-bg-light); /* In case it is transparent svg */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.avatar-card:hover img {
+    transform: scale(1.1);
+}
+
+/* When Avatar is selected */
+.avatar-card:has(input[type="radio"]:checked) {
+    border-color: var(--theme-secondary);
+    background-color: rgba(52, 152, 219, 0.1);
+}
+
+/* Password Strength Meter */
+.password-strength-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+    font-size: 0.9rem;
+    color: #2c3e50;
+    font-weight: 600;
+    height: 28px;
+}
+
+.strength-badge {
+    padding: 4px 16px;
+    border-radius: 20px; /* Rounded edges - pill */
+    color: #ffffff;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: capitalize;
+    transition: background-color 0.3s ease;
+}
+
+/* Background colors for the Badges */
+.bg-very-weak   { background-color: #d32f2f; }
+.bg-weak        { background-color: #ff4757; }
+.bg-normal      { background-color: #3498db; }
+.bg-strong      { background-color: #05c46b; }
+.bg-very-strong { background-color: #008f39; }

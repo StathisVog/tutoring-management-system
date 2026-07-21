@@ -1,0 +1,332 @@
+/* --- PAGE HEADER --- */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #ecf0f1;
+    padding-bottom: 15px;
+}
+
+.page-header h2 {
+    margin: 0 0 5px 0;
+    color: #2c3e50;
+}
+
+.page-header .subtitle {
+    margin: 0;
+    color: #7f8c8d;
+    font-size: 0.95rem;
+}
+
+.btn-primary {
+    background-color: #4f85d4;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+.btn-primary:hover { background-color: #3b6bb3; }
+
+/* --- GRID & CARDS --- */
+.absences-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+}
+
+.absence-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border: 1px solid #ecf0f1;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Card Types Colors */
+.card-type-full { border-top: 5px solid #e74c3c; }
+.card-type-specific { border-top: 5px solid #e67e22; }
+
+.absence-card-header {
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #ecf0f1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.absence-date {
+    font-weight: bold;
+    color: #2c3e50;
+    font-size: 1.1rem;
+}
+
+.absence-badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: white;
+}
+.badge-full { background-color: #e74c3c; }
+.badge-specific { background-color: #e67e22; }
+
+.absence-card-body {
+    padding: 15px;
+    min-height: 80px;
+}
+
+.absence-course {
+    font-weight: 600;
+    color: #34495e;
+    margin: 0 0 5px 0;
+    font-size: 0.95rem;
+}
+
+.absence-reason {
+    color: #7f8c8d;
+    margin: 0;
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+.absence-card-footer {
+    padding: 10px 15px;
+    border-top: 1px solid #ecf0f1;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    background-color: #fdfdfd;
+}
+
+/* --- Past Absences (Logged) --- */
+.absence-card.past-absence {
+    opacity: 0.75;
+    background-color: #fcfcfc;
+    border-color: #e0e6ed;
+    box-shadow: none;
+}
+
+.absence-card.past-absence .absence-badge {
+    background-color: #bdc3c7;
+}
+
+.absence-card.past-absence.card-type-full,
+.absence-card.past-absence.card-type-specific {
+    border-top: 5px solid #bdc3c7;
+}
+
+.absence-card-footer.footer-logged {
+    justify-content: center;
+    background-color: #f4f6f7;
+    border-top: 1px dashed #ecf0f1;
+}
+
+.btn-card {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+.btn-card.edit { color: #f39c12; }
+.btn-card.edit:hover { background-color: #fef5e7; }
+.btn-card.delete { color: #e74c3c; }
+.btn-card.delete:hover { background-color: #fdeaea; }
+
+.btn-card.delete.confirming {
+    background-color: #e74c3c;
+    color: white;
+}
+
+/* --- Modal Inline Alerts --- */
+.alert {
+    padding: 12px 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    border: 1px solid transparent;
+}
+
+.alert-danger {
+    background-color: #fdeaea;
+    color: #e74c3c;
+    border-color: #fad4d4;
+}
+
+.alert-info {
+    background-color: #e8f4fd;
+    color: #3498db;
+    border-color: #d1e8fa;
+}
+
+.alert-warning {
+    background-color: #fef5e7;
+    color: #e67e22;
+    border-color: #faebd7;
+}
+
+.alert-success {
+    background-color: #f2fcf5;
+    color: #27ae60;
+    border-color: #d8f5e1;
+}
+
+.alert i {
+    margin-right: 5px;
+}
+
+/* Utilities */
+.grid-empty-msg {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 20px;
+    background-color: #fbfcfc;
+    border: 2px dashed #ebf0f1;
+    border-radius: 8px;
+    color: #7f8c8d;
+}
+
+.grid-empty-msg i {
+    font-size: 3.5rem;
+    color: #bdc3c7;
+    margin-bottom: 15px;
+    display: block;
+}
+
+.grid-empty-msg p {
+    font-size: 1.1rem;
+    margin: 0;
+    font-weight: 500;
+}
+
+.grid-empty-msg.error-state {
+    color: #e74c3c;
+    border-color: #fad4d4;
+    background-color: #fdeaea;
+}
+
+.grid-empty-msg.error-state i {
+    color: #e74c3c;
+}
+
+.d-none { display: none !important; }
+
+/* --- MODAL --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(3px);
+}
+
+.modal-content {
+    background: #fff;
+    width: 90%;
+    max-width: 600px;
+    border-radius: 8px;
+    padding: 25px;
+    position: relative;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #7f8c8d;
+}
+
+.close-btn:hover { color: #e74c3c; }
+
+.modal-header h3 {
+    margin: 0 0 20px 0;
+    border-bottom: 2px solid #ecf0f1;
+    padding-bottom: 10px;
+    color: #2c3e50;
+}
+
+.form-group { margin-bottom: 15px; }
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #2c3e50;
+    font-size: 0.9rem;
+}
+
+.form-control, .form-group input[type="date"], .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #bdc3c7;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+.form-control:focus, .form-group input:focus, .form-group textarea:focus {
+    border-color: #4f85d4;
+    outline: none;
+}
+
+.form-control:disabled {
+    background-color: #f8f9fa;
+    cursor: not-allowed;
+}
+
+.radio-group {
+    display: flex;
+    gap: 20px;
+}
+
+.radio-label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    color: #34495e;
+    font-size: 0.95rem;
+}
+
+.btn-submit {
+    width: 100%;
+    background: #27ae60;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-top: 10px;
+}
+
+.btn-submit:hover { background: #219653; }
+
+.btn-submit:disabled {
+    background: #95a5a6;
+    cursor: not-allowed;
+}

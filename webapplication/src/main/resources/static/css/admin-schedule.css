@@ -1,0 +1,412 @@
+/* 1. PAGE LAYOUT & HEADER (Admin Container) */
+.admin-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.admin-main-content {
+    flex: 1;
+    padding: 20px;
+    background-color: #f8f9fa;
+}
+
+.module-header {
+    margin-bottom: 30px;
+}
+
+.center-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 15px;
+}
+
+.center-header .header-title h2 {
+    margin: 0 0 5px 0;
+    color: #2c3e50;
+}
+
+.center-header .header-title p {
+    color: #7f8c8d;
+    margin: 0;
+}
+
+/* 2. UI COMPONENTS (Buttons, Forms, Alerts) */
+.btn-action {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: background-color 0.2s, opacity 0.2s;
+}
+
+.btn-action:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-activate {
+    background-color: #27ae60;
+    color: white;
+}
+
+.btn-activate:hover:not(:disabled) {
+    background-color: #219150;
+}
+
+.standard-form label {
+    font-weight: 600;
+    color: #34495e;
+    margin-bottom: 5px;
+    display: block;
+    font-size: 0.9rem;
+}
+
+.required {
+    color: #e74c3c;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccd1d9;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.form-control:focus {
+    border-color: #3498db;
+}
+
+.form-control:disabled {
+    background-color: #ecf0f1;
+    cursor: not-allowed;
+}
+
+.form-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group select { cursor: pointer; }
+
+.modal-alert {
+    padding: 10px 15px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+    display: none;
+}
+
+.alert-danger {
+    background-color: #fdeaea;
+    color: #e74c3c;
+    border: 1px solid #fad4d4;
+}
+
+/* 3. MODAL (Pop-up overlay) */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none; /* Κρυφό αρχικά */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    width: 100%;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-md {
+    max-width: 600px;
+}
+
+.modal-header {
+    padding: 15px 20px;
+    border-bottom: 1px solid #ecf0f1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: #2c3e50;
+}
+
+.close-modal {
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #7f8c8d;
+}
+
+.close-modal:hover {
+    color: #e74c3c;
+}
+
+.modal-body {
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.footer-spaced {
+    margin-top: 25px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* 4. KANBAN BOARD (Timetable Matrix) */
+.timetable-kanban-board {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+    padding-bottom: 15px;
+    align-items: flex-start;
+}
+
+.kanban-column {
+    flex: 0 0 280px;
+    background-color: #f4f6f8;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    max-height: 75vh;
+}
+
+.kanban-column-header {
+    padding: 15px;
+    font-weight: 700;
+    color: #2c3e50;
+    text-align: center;
+    border-bottom: 2px solid #e0e4e8;
+    background-color: #ebf0f4;
+    border-radius: 8px 8px 0 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.kanban-cards-container {
+    padding: 10px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.slot-card {
+    background-color: #ffffff;
+    border: 1px solid #e0e4e8;
+    border-left: 4px solid #3498db;
+    border-radius: 6px;
+    padding: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+}
+
+.slot-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+.slot-time {
+    font-size: 0.85rem;
+    color: #7f8c8d;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.slot-course {
+    font-size: 0.95rem;
+    color: #2c3e50;
+    font-weight: 700;
+    margin-bottom: 3px;
+}
+
+.slot-teacher {
+    font-size: 0.85rem;
+    color: #34495e;
+    margin-bottom: 10px;
+}
+
+.slot-badges {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+}
+
+.badge-classroom {
+    background-color: #ecf0f1;
+    color: #2c3e50;
+    font-size: 0.75rem;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+.badge-online { background-color: #d5f5e3; color: #27ae60; }
+.badge-full { background-color: #fdeaea; color: #e74c3c; }
+
+.slot-actions {
+    display: flex;
+    justify-content: flex-end;
+    border-top: 1px solid #ecf0f1;
+    padding-top: 8px;
+    margin-top: 8px;
+}
+
+.btn-icon-delete {
+    background: none;
+    border: none;
+    color: #e74c3c;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 4px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.btn-icon-delete:hover:not(:disabled) {
+    background-color: #fdeaea;
+}
+
+/* Defensive UX */
+.btn-icon-delete:disabled {
+    color: #bdc3c7;
+    cursor: not-allowed;
+}
+
+.btn-icon-delete.btn-icon-sure {
+    background-color: #e74c3c;
+    color: white;
+    font-size: 0.85rem;
+    padding: 4px 12px;
+    font-weight: bold;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-icon-delete.btn-icon-sure:hover:not(:disabled) {
+    background-color: #c0392b;
+}
+
+.loading-spinner {
+    width: 100%;
+    text-align: center;
+    padding: 40px;
+    color: #7f8c8d;
+    font-weight: 600;
+}
+
+/* 5. Class Roster */
+
+/* --- Roster Modal Specifics --- */
+.modal-lg {
+    max-width: 950px;
+    width: 90%;
+}
+
+.modal-subtitle {
+    margin: 5px 0 0 0;
+    color: #7f8c8d;
+    font-size: 0.9rem;
+}
+
+.init-hidden {
+    display: none;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 40px;
+    color: #7f8c8d;
+}
+
+.empty-state-icon {
+    margin-bottom: 15px;
+    color: #bdc3c7;
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+.standard-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.standard-table th,
+.standard-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+.standard-table th {
+    background-color: #f8f9fa;
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+.standard-table tbody tr:hover {
+    background-color: #fcfcfc;
+}
+
+/* Helper classes for table data */
+.text-muted {
+    color: #7f8c8d;
+}
+
+.email-link {
+    color: #3498db;
+    text-decoration: none;
+}
+
+.email-link:hover {
+    text-decoration: underline;
+}
+
+/* Status Badges for the board */
+.status-badge-sm {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    white-space: nowrap; /* Prevents text from being cut in half */
+}
+
+.status-active-sm {
+    background-color: #e8f8f5;
+    color: #27ae60;
+}
+
+.status-pending-sm {
+    background-color: #fef9e7;
+    color: #f39c12;
+}

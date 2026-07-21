@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Global Timetable - Admin</title>
+
+  <link th:href="@{/css/themes.css}" rel="stylesheet">
+
+  <link th:href="@{/css/navbar.css}" rel="stylesheet">
+  <link th:href="@{/css/footer.css}" rel="stylesheet">
+
+  <link th:href="@{/css/toast.css}" rel="stylesheet">
+
+  <link th:href="@{/css/admin-layout.css}" rel="stylesheet">
+  <link th:href="@{/css/admin-schedule.css}" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<!-- Flash of Unstyled Content -->
+<script>
+  const savedTheme = localStorage.getItem('tms_theme') || 'theme-default';
+  const currentUser = localStorage.getItem('tms_current_user') || '';
+
+  // read the sidebar state specifically for this user
+  const isSidebarCollapsed = localStorage.getItem('tms_sidebar_collapsed_' + currentUser) === 'true';
+
+  document.body.className = savedTheme + (isSidebarCollapsed ? ' sidebar-collapsed' : '');
+</script>
+
+<nav th:replace="~{layout/navbar :: navbar}"></nav>
+
+<div class="admin-container">
+
+  <aside th:replace="~{layout/admin-sidebar :: sidebar}"></aside>
+
+  <main class="admin-main-content">
+
+    <div class="module-header center-header">
+      <div class="header-title">
+        <h2>Global Timetable</h2>
+        <p>Manage weekly classes, allocate classrooms, and coordinate teacher schedules.</p>
+      </div>
+      <div class="header-actions">
+        <button id="openCreateSlotModalBtn" class="btn-action btn-activate">+ Add New Class</button>
+      </div>
+    </div>
+
+    <div class="timetable-kanban-board" id="timetableBoard">
+      <div class="loading-spinner">Fetching timetable...</div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Class Creation -->
+<div id="slotModal" class="modal-overlay">
+  <div class="modal-content modal-md">
+    <div class="modal-header">
+      <h3 id="modalTitle">Create Scheduled Class</h3>
+      <span class="close-modal" id="closeModalBtn">&times;</span>
+    </div>
+    <div class="modal-body">
+
+      <div id="slotAlert" class="modal-alert"></div>
+
+      <form id="slotForm" class="standard-form">
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="slotCourse">Course <span class="required">*</span></label>
+            <select id="slotCourse" class="form-control" required>
+              <option value="">Select a course...</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="slotTeacher">Teacher <span class="required">*</span></label>
+            <select id="slotTeacher" class="form-control" required disabled>
+              <option value="">Select a course first...</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="slotDay">Day of Week <span class="required">*</span></label>
+            <select id="slotDay" class="form-control" required>
+              <option value="MONDAY">Monday</option>
+              <option value="TUESDAY">Tuesday</option>
+              <option value="WEDNESDAY">Wednesday</option>
+              <option value="THURSDAY">Thursday</option>
+              <option value="FRIDAY">Friday</option>
+              <option value="SATURDAY">Saturday</option>
+              <option value="SUNDAY">Sunday</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="slotStartTime">Start Time <span class="required">*</span></label>
+            <input type="time" id="slotStartTime" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="slotEndTime">End Time <span class="required">*</span></label>
+            <input type="time" id="slotEndTime" class="form-control" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="slotClassroom">Classroom (Leave empty for Online)</label>
+            <input type="text" id="slotClassroom" class="form-control" placeholder="e.g. ROOM A1">
+          </div>
+          <div class="form-group">
+            <label for="slotCapacity">Capacity <span class="required">*</span></label>
+            <input type="number" id="slotCapacity" class="form-control" min="1" value="10" required>
+          </div>
+        </div>
+
+        <div class="modal-footer footer-spaced">
+          <button type="submit" id="saveSlotBtn" class="btn-action btn-activate">Save Class</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Class Roster -->
+<div id="rosterModal" class="modal-overlay">
+  <div class="modal-content modal-lg">
+    <div class="modal-header">
+      <div>
+        <h3 id="rosterModalTitle">Class Roster</h3>
+        <p id="rosterModalSubtitle" class="modal-subtitle"></p>
+      </div>
+      <span class="close-modal" id="closeRosterModalBtn">&times;</span>
+    </div>
+    <div class="modal-body">
+
+      <div id="rosterLoading" class="loading-spinner init-hidden">
+        <i class="fas fa-spinner fa-spin fa-2x"></i>
+        <p>Loading roster...</p>
+      </div>
+
+      <div id="rosterEmptyState" class="empty-state init-hidden">
+        <i class="fas fa-users-slash fa-3x empty-state-icon"></i>
+        <h4>No students enrolled</h4>
+        <p>There are currently no active students in this scheduled class.</p>
+      </div>
+
+      <div class="table-responsive init-hidden" id="rosterTableContainer">
+        <table class="standard-table">
+          <thead>
+          <tr>
+            <th>Student Name</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Enrollment Date</th>
+            <th>Status</th>
+          </tr>
+          </thead>
+          <tbody id="rosterTableBody">
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<footer th:replace="~{layout/footer :: footer}"></footer>
+
+<script th:src="@{/js/api.js}"></script>
+<script th:src="@{/js/admin-schedule.js}"></script>
+</body>
+</html>

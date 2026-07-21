@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courses & Assignments - Admin</title>
+
+    <link th:href="@{/css/themes.css}" rel="stylesheet">
+
+    <link th:href="@{/css/navbar.css}" rel="stylesheet">
+    <link th:href="@{/css/footer.css}" rel="stylesheet">
+    <link th:href="@{/css/guest-courses.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="page-wrapper">
+
+<nav th:replace="~{layout/navbar :: navbar}"></nav>
+
+<main class="courses-container">
+
+    <div class="courses-header">
+        <h2>Available Courses</h2>
+        <p>Select a Course to view its detailed schedule and available seats.</p>
+    </div>
+
+    <div id="coursesGrid" class="courses-grid">
+        <div id="loadingIndicator" class="loading-spinner">Loading courses...</div>
+    </div>
+
+</main>
+
+<div id="scheduleModal" class="modal-overlay">
+    <div class="modal-card">
+        <span id="closeModalBtn" class="close-btn">&times;</span>
+        <h3 id="modalCourseTitle">Course Schedule</h3>
+
+        <div id="modalAlertBox" style="display: none;"></div>
+
+        <div class="table-responsive">
+            <table class="schedule-table">
+                <thead>
+                <tr>
+                    <th>Day</th>
+                    <th>Time</th>
+                    <th>Teacher</th>
+                    <th>Classroom</th>
+                    <th>Enrolled</th>
+                    <th>Capacity</th>
+                    <th>Status</th>
+                    <th style="text-align: center;">Action</th>
+                </tr>
+                </thead>
+                <tbody id="modalScheduleBody">
+                </tbody>
+            </table>
+        </div>
+
+        <div id="modalEmptyState" class="empty-state">
+            No Scheduled Classes available for this Course yet.
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{layout/footer :: footer}"></footer>
+
+<script th:src="@{/js/toast.js}"></script>
+<script th:src="@{/js/api.js}"></script>
+<script th:src="@{/js/guest-courses.js}"></script>
+
+</body>
+</html>

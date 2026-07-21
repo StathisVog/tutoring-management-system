@@ -1,0 +1,206 @@
+/* Center the registration card vertically and horizontally */
+.register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 140px); /* Adjust based on your navbar/footer height */
+    padding: 40px 20px;
+    background-color: #f4f6f8;
+}
+
+/* The main registration card */
+.register-card {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+}
+
+.register-card h2 {
+    color: #2c3e50;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.register-card p.subtitle {
+    text-align: center;
+    color: #7f8c8d;
+    margin-bottom: 24px;
+    font-size: 14px;
+}
+
+/* Form Groups and Inputs */
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    color: #34495e;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccd1d9;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+.form-group select { cursor: pointer; }
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #4f85d4;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(79, 133, 212, 0.2);
+}
+
+/* Dynamic Sections */
+.dynamic-section {
+    display: none; /* Hidden by default, toggled by JS */
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-left: 4px solid #4f85d4;
+    border-radius: 4px;
+    margin-bottom: 16px;
+}
+
+.dynamic-section.active {
+    display: block;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Submit Button */
+.btn-submit {
+    width: 100%;
+    background-color: #4f85d4;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.4s ease;
+    margin-top: 10px;
+}
+
+.btn-submit:hover {
+    background-color: #3b6bb3;
+}
+
+/* Alert Messages */
+.alert {
+    padding: 12px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    display: none;
+    font-size: 14px;
+}
+
+.alert-error {
+    background-color: #fdeaea;
+    color: #e74c3c;
+    border: 1px solid #fad4d4;
+}
+
+.alert-success {
+    background-color: #e8f8f5;
+    color: #27ae60;
+    border: 1px solid #d1f2eb;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Scrollable Checkbox List for Courses --- */
+.checkbox-scroll-container {
+    max-height: 160px;
+    overflow-y: auto;
+    border: 1px solid #bdc3c7;
+    border-radius: 4px;
+    padding: 10px;
+    background-color: #fefefe;
+}
+
+.required-asterisk {
+    color: #e74c3c;
+}
+
+.status-text-sm {
+    font-size: 0.9rem;
+    color: #7f8c8d;
+}
+
+.status-error-sm {
+    font-size: 0.9rem;
+    color: #e74c3c;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    color: #34495e;
+}
+
+.checkbox-label:last-child {
+    margin-bottom: 0;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+    padding: 0;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+/* Password Strength Meter */
+.password-strength-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+    font-size: 0.9rem;
+    color: #2c3e50;
+    font-weight: 600;
+    height: 28px;
+}
+
+.strength-badge {
+    padding: 4px 16px;
+    border-radius: 20px;
+    color: #ffffff;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: capitalize;
+    transition: background-color 0.3s ease;
+}
+
+/* Background colors for the Badge */
+.bg-very-weak   { background-color: #d32f2f; }
+.bg-weak        { background-color: #ff4757; }
+.bg-normal      { background-color: #3498db; }
+.bg-strong      { background-color: #05c46b; }
+.bg-very-strong { background-color: #008f39; }
