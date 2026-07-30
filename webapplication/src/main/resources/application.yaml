@@ -10,13 +10,13 @@ spring:
 
   # Java JSON Web Token (JJWT)
   jwt:
-    secret: c006ef539e4cf9a386f942526c238a8e9c2eadef35232fd6bb13063ef0e73d74
-    expiration: 86400000
+    secret: ${JWT_SECRET:c006ef539e4cf9a386f942526c238a8e9c2eadef35232fd6bb13063ef0e73d74}
+    expiration: ${JWT_EXPIRATION:86400000}
 
   datasource:
-    url: jdbc:mysql://localhost:3307/tutoring_management?useSSL=false&serverTimezone=UTC&createDatabaseIfNotExist=true
-    username: root
-    password:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/tutoring_management?useSSL=false&serverTimezone=UTC&createDatabaseIfNotExist=true
+    username: ${DB_USER:root}
+    password: ${DB_PASSWORD:}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -34,7 +34,7 @@ spring:
     cache: false
 
 server:
-  port: 8080
+  port: ${SERVER_PORT:8080}
 
 # Swagger Documentation
 springdoc:
